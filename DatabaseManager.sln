@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseManager.Domain", "DatabaseManager.Domain\DatabaseManager.Domain.csproj", "{3D92B67D-2FA8-498B-AC5F-7475D476A89C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseManager.WebUI", "DatabaseManager.WebUI\DatabaseManager.WebUI.csproj", "{DFB5A737-0314-4163-9794-CCDC665C7206}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseManager.UnitTests", "DatabaseManager.UnitTests\DatabaseManager.UnitTests.csproj", "{DA5BAAD8-F853-481C-BB77-90D2D067DA4E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3D92B67D-2FA8-498B-AC5F-7475D476A89C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D92B67D-2FA8-498B-AC5F-7475D476A89C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D92B67D-2FA8-498B-AC5F-7475D476A89C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D92B67D-2FA8-498B-AC5F-7475D476A89C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFB5A737-0314-4163-9794-CCDC665C7206}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFB5A737-0314-4163-9794-CCDC665C7206}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFB5A737-0314-4163-9794-CCDC665C7206}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFB5A737-0314-4163-9794-CCDC665C7206}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA5BAAD8-F853-481C-BB77-90D2D067DA4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA5BAAD8-F853-481C-BB77-90D2D067DA4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA5BAAD8-F853-481C-BB77-90D2D067DA4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA5BAAD8-F853-481C-BB77-90D2D067DA4E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

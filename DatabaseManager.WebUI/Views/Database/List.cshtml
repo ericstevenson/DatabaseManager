@@ -1,0 +1,16 @@
+﻿@using DatabaseManager.Domain.Entities;
+@model IEnumerable<Database>
+
+@{
+    ViewBag.Title = "Databases";
+}
+
+@foreach (var d in Model) 
+{   
+    <div>
+        <h3>@d.Name</h3>
+        @d.Developer
+        <h4>@d.DatabaseID</h4>
+    </div> 
+}
+
