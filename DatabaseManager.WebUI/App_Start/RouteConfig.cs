@@ -12,6 +12,11 @@ namespace DatabaseManager.WebUI
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+            routes.MapRoute(
+                name: null,
+                url: "{lawsonNumber}",
+                defaults: new { Controller = "Database", action = "Edit" }
+            );
 
             routes.MapRoute(
                 name: "Default",

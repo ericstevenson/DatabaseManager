@@ -1,0 +1,28 @@
+﻿@model DatabaseManager.Domain.Entities.LawsonDatabase
+@{
+    ViewBag.Title = "Add New Data Field";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="panel">
+    <div class="panel-heading">
+        <h3>Add New Data Field for @Model.Nickname</h3>
+    </div>
+    <div class="panel-body">
+        @using (Html.BeginForm("AddColumn", "Database"))
+        {
+            <div class="block-form-inline">
+                @Html.HiddenFor(m => m.LawsonDatabaseID)
+                <label>Data Field Name</label>
+                @Html.TextBox("fieldname", null, new { @class = "form-control" })
+                <br style="visibility: hidden;" />
+                <label>Data Field Value</label>
+                @Html.TextBox("fieldvalue", null, new { @class = "form-control" })
+                <br style="visibility: hidden;" />
+                <input type="submit" value="Save Field to this Database Only" class="btn btn-primary" name="Save"/>
+                <input type="submit" value="Save Field to All Databases" class="btn btn-primary" name="Save" />
+            </div>
+        }
+    </div>
+</div>
+

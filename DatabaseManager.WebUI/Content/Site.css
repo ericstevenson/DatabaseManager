@@ -1,18 +1,13 @@
-﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
-}
-
-/* Set padding to keep content from hitting the edges */
+﻿/* Set padding to keep content from hitting the edges */
 .body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+    padding-left: 15px !important;
+    padding-right: 15px !important;
 }
 
 /* Set width on the form input elements since they're 100% wide by default */
 input[type="text"],
 input[type="password"] {
-    max-width: 280px;
+    width: 100% !important;
 }
 
 /* styles for validation helpers */
@@ -38,4 +33,35 @@ input[type="checkbox"].input-validation-error {
 
 .validation-summary-valid {
     display: none;
+}
+
+textarea {
+    resize: none;
+    width: 100% !important;
+}
+
+.form-total {
+  margin: 0 auto;
+  max-width:100%;
+}
+
+.block-form-inline {
+  display: block;
+  float: left;
+  height: 100px;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-top: 10px;
+  width: 40%;
+}
+
+full-width {
+    width: 100%;
+    float: left;
+    display: inline-block;
+}
+
+.half-height {
+    position: relative;
+    height: 50%;
 }

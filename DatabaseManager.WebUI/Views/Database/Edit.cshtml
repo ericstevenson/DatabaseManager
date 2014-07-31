@@ -1,0 +1,77 @@
+﻿@model DatabaseManager.Domain.Entities.LawsonDatabase
+
+@{
+    ViewBag.Title = "Edit " + Model.Nickname;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="panel">
+    <div class="panel-heading" style="text-align: center;">
+        <h2>Edit @Model.Nickname</h2>
+    </div>
+    @using (Html.BeginForm("Edit", "Database"))
+    {
+        <div class="panel-body form-total">
+            <h3 style="margin-left: 5%;">Default Fields</h3>
+            <hr />
+            @Html.HiddenFor(m => m.LawsonDatabaseID)
+            @Html.HiddenFor(m => m.AdditionalFields)
+            @foreach (var property in ViewData.ModelMetadata.Properties)
+            {
+                if (property.PropertyName != "LawsonDatabaseID" && property.PropertyName != "AdditionalFields")
+                {
+                <div class="block-form-inline">
+                    <label>@(property.DisplayName ?? property.PropertyName)</label>
+                    <br />
+                    @if (property.PropertyName == "StudyTitle")
+                    {
+                        @Html.TextArea(property.PropertyName, null, new { @class = "form-control", rows = 3 })
+                    }
+                    else if ((property.DisplayName ?? property.PropertyName).Contains("Date"))
+                    {
+                        <div class="form-group">
+                            <div class="input-group date" id="@property.PropertyName">
+                                @Html.TextBox(property.PropertyName, null, new { @class = "form-control" })
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                        </div>
+                        <script type="text/javascript">
+                            $(function () {
+                                $("#@property.PropertyName").datetimepicker({
+                                    format: 'YYYY/MM/DD',
+                                    pickDate: true,
+                                    pickTime: false,
+                                    pick12HourFormat: false
+                                });
+                            });
+                        </script>
+                    }
+                    else
+                    { 
+                        @Html.TextBox(property.PropertyName, null, new { @class = "form-control" })    
+                    }
+                </div> 
+                }
+            }
+            <div style="clear: both;"></div>
+            <h3 style="margin-left: 5%;">Custom Fields</h3>
+            <hr />
+            @foreach (KeyValuePair<string, string> kv in ViewBag.AdditionalFields)
+            {
+                <div class="block-form-inline">
+                    <label>@kv.Key</label>
+                    <br />
+                    @Html.TextBox(kv.Key, kv.Value, new { @class = "form-control" })
+                </div>
+            }
+        </div>
+        <div class="panel-footer">
+            <input type="submit" value="Save" class="btn btn-primary" />
+            @Html.ActionLink("Add Column", "AddColumn", new { Model.LawsonDatabaseID }, new { @class = "btn btn-default" })       
+            @Html.ActionLink("Cancel and return to List", "List", null, new { @class = "btn btn-default" })
+        </div>
+       
+    }
+</div>
+

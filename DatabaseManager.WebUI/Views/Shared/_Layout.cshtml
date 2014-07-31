@@ -1,13 +1,38 @@
 ﻿<!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>@ViewBag.Title</title>
-    </head>
+<head>
+    <meta charset="utf-8" />
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-theme.css" rel="stylesheet" />
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/moment.min.js"></script>
+    <link href="~/Content/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap-datetimepicker.min.js"></script>
+
+    <script type="text/javascript">
+        window.setTimeout(function () {
+            $("#alert-success").fadeTo(500, 0).slideUp(500, function () {
+                $(this).remove();
+            });
+        }, 3000);
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+</head>
 <body>
-    <div>
-        @RenderBody()
+    <div class="navbar navbar-inverse" style="border-radius: 0px !important;" role="navigation">
+        @Html.ActionLink("Lawson Informatics Database Management", "List", null, new { @class = "navbar-brand" });
+    </div>
+    <div class="row panel">
+        <div class="body-content">
+            @if (TempData["message"] != null)
+            {
+                <div id="@TempData["alert-class"] @ViewBag.AlertClass" class="alert @TempData["alert-class"] @ViewBag.AlertClass">@TempData["message"]</div>
+            }
+            @RenderBody()
+        </div>
     </div>
 </body>
 </html>

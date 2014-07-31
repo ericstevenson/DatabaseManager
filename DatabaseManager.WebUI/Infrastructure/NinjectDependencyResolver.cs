@@ -6,6 +6,7 @@ using Ninject;
 using DatabaseManager.Domain.Abstract;
 using DatabaseManager.Domain.Entities;
 using Moq;
+using DatabaseManager.Domain.Concrete;
 
 namespace DatabaseManager.WebUI.Infrastructure
 {
@@ -31,14 +32,8 @@ namespace DatabaseManager.WebUI.Infrastructure
 
         private void AddBindings()
         {
-            Mock<IDatabaseRepository> mock = new Mock<IDatabaseRepository>();
-            mock.Setup(m => m.Databases).Returns(new List<Database> {
-                new Database { Name = "LawsonAdmin", PIName = "David Hill", Developer = "John Soer"},
-                new Database { Name = "PREP", PIName = "Rupinder Mann", Developer = "John Soer"},
-                new Database { Name = "MHEN", PIName = "Cheryl Forchuk", Developer = "John Soer"}
-            });
+            kernel.Bind <ILawsonDatabaseRepository>().To<EFLawsonDatabaseRepository>();
 
-            kernel.Bind<IDatabaseRepository>().ToConstant(mock.Object);
         }
     }
 }
