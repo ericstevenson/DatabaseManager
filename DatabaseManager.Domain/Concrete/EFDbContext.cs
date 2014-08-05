@@ -11,5 +11,6 @@ namespace DatabaseManager.Domain.Concrete
     public class EFDbContext : DbContext
     {
         public DbSet<LawsonDatabase> LawsonDatabases { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }

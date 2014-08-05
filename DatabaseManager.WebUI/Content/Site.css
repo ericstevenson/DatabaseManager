@@ -30,6 +30,10 @@ input[type="checkbox"].input-validation-error {
 .validation-summary-errors {
     color: #b94a48;
 }
+div.validation-summary-errors > ul {
+    color: #b94a48;
+    list-style: none;
+}
 
 .validation-summary-valid {
     display: none;
@@ -65,3 +69,4 @@ full-width {
     position: relative;
     height: 50%;
 }
+

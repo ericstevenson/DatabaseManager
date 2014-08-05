@@ -10,6 +10,7 @@ using System.Xml.Linq;
 
 namespace DatabaseManager.WebUI.Controllers
 {
+    [Authorize]
     public class DatabaseController : Controller
     {
         public const string ALERT_SUCCESS = "alert-success";

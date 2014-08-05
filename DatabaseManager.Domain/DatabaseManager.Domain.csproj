@@ -75,9 +75,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstract\ILawsonDatabaseRepository.cs" />
+    <Compile Include="Abstract\IUserRepository.cs" />
     <Compile Include="Concrete\EFDbContext.cs" />
     <Compile Include="Concrete\EFLawsonDatabaseRepository.cs" />
+    <Compile Include="Concrete\EFUserRepository.cs" />
     <Compile Include="Entities\LawsonDatabase.cs" />
+    <Compile Include="Entities\User.cs" />
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

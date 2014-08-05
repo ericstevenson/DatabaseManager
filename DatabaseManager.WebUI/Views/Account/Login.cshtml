@@ -1,0 +1,38 @@
+﻿@model DatabaseManager.WebUI.Models.LoginViewModel
+
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_NotAuthenticatedLayout.cshtml";
+}
+<div class="container">
+    <div id="loginbox" style="margin-top: 50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <div class="panel-heading">Sign In</div>
+            </div>
+            <div class="panel-body">
+                @using (Html.BeginForm())
+                {
+                    @Html.ValidationSummary()
+                    <div class="input-group" style="margin-bottom: 25px">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                        @Html.TextBoxFor(m => m.Username, new { @class = "form-control", placeholder = "Username" })
+                    </div> 
+            
+                    <div class="input-group" style="margin-bottom: 25px">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                        @Html.TextBoxFor(m => m.Password, new { @class = "form-control", placeholder = "Password" })
+                    </div> 
+            
+                    <input type="submit" value="Log In" class="btn btn-success" />
+                    <hr />
+                    <div>
+                        Don't have an account?
+                        @Html.ActionLink("Register", "Register")
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+

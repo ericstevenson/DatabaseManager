@@ -7,6 +7,8 @@ using DatabaseManager.Domain.Abstract;
 using DatabaseManager.Domain.Entities;
 using Moq;
 using DatabaseManager.Domain.Concrete;
+using DatabaseManager.WebUI.Infrastructure.Abstract;
+using DatabaseManager.WebUI.Infrastructure.Concrete;
 
 namespace DatabaseManager.WebUI.Infrastructure
 {
@@ -33,7 +35,8 @@ namespace DatabaseManager.WebUI.Infrastructure
         private void AddBindings()
         {
             kernel.Bind <ILawsonDatabaseRepository>().To<EFLawsonDatabaseRepository>();
-
+            kernel.Bind<IUserRepository>().To<EFUserRepository>();
+            kernel.Bind<IAuthProvider>().To<FormsAuthProvider>();
         }
     }
 }
