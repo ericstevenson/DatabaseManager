@@ -24,7 +24,8 @@ namespace DatabaseManager.Domain.Concrete
 
         public User GetUser(string userName)
         {
-            return context.Users.SingleOrDefault(u => u.Username.Equals(userName, StringComparison.Ordinal));
+            User user = context.Users.SingleOrDefault(u => u.Username == userName);
+            return user.Username == userName ? user : null;
         }
 
         public void SaveUser(User user)
