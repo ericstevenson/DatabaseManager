@@ -70,3 +70,12 @@ full-width {
     height: 50%;
 }
 
+.link-plain {
+    color: inherit;
+    text-decoration: inherit;
+}
+
+.caret.caret-reversed {
+    border-top-width: 0;
+    border-bottom: 4px solid #000000;
+}

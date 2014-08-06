@@ -14,12 +14,12 @@
     <div class="panel-body">
         <table class="table table-striped table-condensed">
             <tr>
-                <th>Status on Server</th>
-                <th>Database Status</th>
-                <th>Database Nickname</th>
-                <th>Contact</th>
-                <th>REB Expiry</th>
-                <th>Principal Investigator</th>
+                <th><a class="link-plain" href="@Url.Action("List", "Database", new { sortingOrder = "OnServerStatus" })">Status on Server<span class="@(ViewBag.SortingOrder == "OnServerStatus" ? "caret caret-reverse" : "")"></span></a></th>
+                <th><a class="link-plain" href="@Url.Action("List", "Database", new { sortingOrder = "DatabaseStatus" })">Database Status<span class="@(ViewBag.SortingOrder == "DatabaseStatus" ? "caret caret-reverse" : "")"></span></a></th>
+                <th><a class="link-plain" href="@Url.Action("List", "Database", new { sortingOrder = "Nickname" })">Nickname<span class="@(ViewBag.SortingOrder == "Nickname" ? "caret caret-reverse" : "")"></span></a></th>
+                <th><a class="link-plain" href="@Url.Action("List", "Database", new { sortingOrder = "InvoiceContact" })">Invoice Contact<span class="@(ViewBag.SortingOrder == "InvoiceContact" ? "caret caret-reverse" : "")"></span></a></th>
+                <th><a class="link-plain" href="@Url.Action("List", "Database", new { sortingOrder = "REBExpiry" })">REB Expiry<span class="@(ViewBag.SortingOrder == "REBExpiry" ? "caret caret-reverse" : "")"></span></a></th>
+                <th><a class="link-plain" href="@Url.Action("List", "Database", new { sortingOrder = "PIName" })">Principal Investigator<span class="@(ViewBag.SortingOrder == "PIName" ? "caret caret-reverse" : "")"></span></a></th>
                 <th style="left: 25px; position: relative;">Action</th>
             </tr>
             @foreach (var d in Model)

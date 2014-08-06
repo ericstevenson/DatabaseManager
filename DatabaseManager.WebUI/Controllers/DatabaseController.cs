@@ -15,6 +15,7 @@ namespace DatabaseManager.WebUI.Controllers
     {
         public const string ALERT_SUCCESS = "alert-success";
         public const string ALERT_DANGER = "alert-danger";
+        public const string DEFAULT_SORTING_ORDER = "Nickname";
 
         private ILawsonDatabaseRepository repository;
 
@@ -23,9 +24,33 @@ namespace DatabaseManager.WebUI.Controllers
             repository = repo;
         }
 
-        public ViewResult List()
+        public ViewResult List(string sortingOrder = DEFAULT_SORTING_ORDER)
         {
-            return View(repository.LawsonDatabases);
+            var databases = repository.LawsonDatabases;
+            ViewBag.SortingOrder = sortingOrder;
+
+            switch (sortingOrder)
+            {
+                case "OnServerStatus":
+                    databases = databases.OrderBy(d => d.OnServerStatus);
+                    break;
+                case "DatabaseStatus":
+                    databases = databases.OrderBy(d => d.DatabaseStatus);
+                    break;
+                case "Nickname":
+                    databases = databases.OrderBy(d => d.Nickname);
+                    break;
+                case "InvoiceContact":
+                    databases = databases.OrderBy(d => d.InvoiceContact);
+                    break;
+                case "REBExpiry":
+                    databases = databases.OrderBy(d => d.REBExpiry);
+                    break;
+                case "PIName":
+                    databases = databases.OrderBy(d => d.PIName);
+                    break;
+            }
+            return View(databases);
         }
 
         public ViewResult Edit(int lawsonDatabaseID)
