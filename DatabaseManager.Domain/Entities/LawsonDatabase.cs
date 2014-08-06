@@ -12,6 +12,12 @@ namespace DatabaseManager.Domain.Entities
         [Display(Name = "Lawson Database ID")]
         public int LawsonDatabaseID { get; set; }
 
+        [Display(Name = "On Server Status")]
+        public string OnServerStatus { get; set; }
+
+        [Display(Name = "Database Status")]
+        public string DatabaseStatus { get; set; }
+
         public string Platform { get; set; }
         
         [Display(Name="Principal Investigator")]

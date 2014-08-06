@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "Register";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_NotAuthenticatedLayout.cshtml";
 }
 
 <div class="container">
@@ -24,12 +24,12 @@
             
                     <div class="control-group" style="margin-bottom: 25px">
                         <label>Password</label>
-                        @Html.TextBoxFor(m => m.Password, new { @class = "form-control", placeholder = "Password" })
+                        @Html.TextBoxFor(m => m.Password, new { type = "password", @class = "form-control", placeholder = "Password" })
                     </div>
                     
                     <div class="control-group" style="margin-bottom: 25px">
                         <label>Re-enter Password</label>
-                        @Html.TextBoxFor(m => m.ReEnteredPassword, new { @class = "form-control", placeholder = "Password" })
+                        @Html.TextBoxFor(m => m.ReEnteredPassword, new { type = "password", @class = "form-control", placeholder = "Password" })
                     </div> 
             
                     <input type="submit" value="Sign Up" class="btn btn-success" />
