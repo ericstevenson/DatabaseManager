@@ -5,8 +5,11 @@ using System.Web;
 using System.Web.Mvc;
 using DatabaseManager.Domain.Entities;
 using DatabaseManager.Domain.Abstract;
+using DatabaseManager.Domain.Concrete;
+using DatabaseManager.WebUI.Infrastructure;
 using System.Xml;
 using System.Xml.Linq;
+using System.Text;
 
 namespace DatabaseManager.WebUI.Controllers
 {
@@ -22,6 +25,7 @@ namespace DatabaseManager.WebUI.Controllers
         public DatabaseController(ILawsonDatabaseRepository repo)
         {
             repository = repo;
+            ILawsonDatabaseRepository test = new EFLawsonDatabaseRepository();
         }
 
         public ViewResult List(string sortingOrder = DEFAULT_SORTING_ORDER)
@@ -29,27 +33,6 @@ namespace DatabaseManager.WebUI.Controllers
             var databases = repository.LawsonDatabases;
             ViewBag.SortingOrder = sortingOrder;
 
-            switch (sortingOrder)
-            {
-                case "OnServerStatus":
-                    databases = databases.OrderBy(d => d.OnServerStatus);
-                    break;
-                case "DatabaseStatus":
-                    databases = databases.OrderBy(d => d.DatabaseStatus);
-                    break;
-                case "Nickname":
-                    databases = databases.OrderBy(d => d.Nickname);
-                    break;
-                case "InvoiceContact":
-                    databases = databases.OrderBy(d => d.InvoiceContact);
-                    break;
-                case "REBExpiry":
-                    databases = databases.OrderBy(d => d.REBExpiry);
-                    break;
-                case "PIName":
-                    databases = databases.OrderBy(d => d.PIName);
-                    break;
-            }
             return View(databases);
         }
 
@@ -173,6 +156,15 @@ namespace DatabaseManager.WebUI.Controllers
                 addAlert("{0} successfully added to {1}", new string[] { fieldName, db.Nickname }, ALERT_SUCCESS);
                 return RedirectToAction("List");
             }
+        }
+
+        public ActionResult Export()
+        {
+            StringBuilder str = new ExcelStringBuilder().Build(repository.LawsonDatabases.OrderBy(d => d.DatabaseStatus));
+            HttpContext.Response.AddHeader("content-disposition", "attachment; filename=LawsonServerDatabases" + DateTime.Now.ToShortDateString() + ".xls");
+            this.Response.ContentType = "application/vnd.ms-excel";
+            byte[] temp = System.Text.Encoding.UTF8.GetBytes(str.ToString());
+            return File(temp, "application/vnd.ms-excel");
         }
 
 

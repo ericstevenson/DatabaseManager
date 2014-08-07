@@ -7,49 +7,67 @@
     ViewBag.Title = "Databases";
 }
 
+@section AddToHead
+    {
+    <link rel="stylesheet" href="@Url.Content("//cdn.datatables.net/1.10.2/css/jquery.dataTables.css")"/>
+    <script src="@Url.Content("//cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js")"></script>
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#databaselist').dataTable({
+            "order": [[2, "asc"]]
+        });
+    });
+</script>
+
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3>Databases</h3>
     </div>
     <div class="panel-body">
-        <table class="table table-striped table-condensed">
-            <tr>
-                <th><a class="link-plain" href="@Url.Action("List", "Database", new { sortingOrder = "OnServerStatus" })">Status on Server<span class="@(ViewBag.SortingOrder == "OnServerStatus" ? "caret caret-reverse" : "")"></span></a></th>
-                <th><a class="link-plain" href="@Url.Action("List", "Database", new { sortingOrder = "DatabaseStatus" })">Database Status<span class="@(ViewBag.SortingOrder == "DatabaseStatus" ? "caret caret-reverse" : "")"></span></a></th>
-                <th><a class="link-plain" href="@Url.Action("List", "Database", new { sortingOrder = "Nickname" })">Nickname<span class="@(ViewBag.SortingOrder == "Nickname" ? "caret caret-reverse" : "")"></span></a></th>
-                <th><a class="link-plain" href="@Url.Action("List", "Database", new { sortingOrder = "InvoiceContact" })">Invoice Contact<span class="@(ViewBag.SortingOrder == "InvoiceContact" ? "caret caret-reverse" : "")"></span></a></th>
-                <th><a class="link-plain" href="@Url.Action("List", "Database", new { sortingOrder = "REBExpiry" })">REB Expiry<span class="@(ViewBag.SortingOrder == "REBExpiry" ? "caret caret-reverse" : "")"></span></a></th>
-                <th><a class="link-plain" href="@Url.Action("List", "Database", new { sortingOrder = "PIName" })">Principal Investigator<span class="@(ViewBag.SortingOrder == "PIName" ? "caret caret-reverse" : "")"></span></a></th>
-                <th style="left: 25px; position: relative;">Action</th>
-            </tr>
-            @foreach (var d in Model)
-            {   
+        <table class="table table-striped table-condensed" id="databaselist">
+            <thead>
                 <tr>
-                    <td>@d.OnServerStatus</td>
-                    <td>@d.DatabaseStatus</td>
-                    <td>@Html.ActionLink(d.Nickname ?? "New Database", "Edit", new { d.LawsonDatabaseID })</td>
-                    <td>@d.InvoiceContact</td>
-                    <td>@(d.REBExpiry != null ? d.REBExpiry.Value.ToString("yyyy/MM/dd") : "")</td>
-                    <td>@d.PIName</td>
-                    <td>
-                        <div style="display: inline-block; float: left; width: 45%;">
-                            @using (Html.BeginForm("Delete", "Database"))
-                            {
-                                @Html.Hidden("LawsonDatabaseID", d.LawsonDatabaseID)
-                                <input type="submit" class="btn btn-block btn-sm btn-default" value="Delete" /> 
-                            }
-                        </div>
-                        <div style="display: inline-block; float: left; width: 45%; margin-left: 10%">
-                            @Html.ActionLink("Add Column", "AddColumn", new { d.LawsonDatabaseID }, new { @class = "btn btn-block btn-sm btn-default" })
-                        </div>
-                    </td>
-                </tr>    
-            }
+                    <th>Status on Server</th>
+                    <th>Database Status</th>
+                    <th>Nickname</th>
+                    <th>Invoice Contact</th>
+                    <th>REB Expiry</th>
+                    <th>Principal Investigator</th>
+                    <th style="text-align:center;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var d in Model)
+                {   
+                    <tr>
+                        <td>@d.OnServerStatus</td>
+                        <td>@d.DatabaseStatus</td>
+                        <td>@Html.ActionLink(d.Nickname ?? "New Database", "Edit", new { d.LawsonDatabaseID })</td>
+                        <td>@d.InvoiceContact</td>
+                        <td>@(d.REBExpiry != null ? d.REBExpiry.Value.ToString("yyyy/MM/dd") : "")</td>
+                        <td>@d.PIName</td>
+                        <td>
+                            <div style="display: inline-block; float: left; width: 45%;">
+                                @using (Html.BeginForm("Delete", "Database"))
+                                {
+                                    @Html.Hidden("LawsonDatabaseID", d.LawsonDatabaseID)
+                                    <input type="submit" class="btn btn-block btn-xs btn-default" value="Delete" /> 
+                                }
+                            </div>
+                            <div style="display: inline-block; float: left; width: 50%; margin-left: 5%">
+                                @Html.ActionLink("Add Field", "AddColumn", new { d.LawsonDatabaseID }, new { @class = "btn btn-block btn-xs btn-default" })
+                            </div>
+                        </td>
+                    </tr>    
+                }
+            </tbody>
         </table>
         <div class="panel-footer">
             @Html.ActionLink("New Database", "Create", "Database", new { @class = "btn btn-default" })
             <div class="btn btn-default">Set up email notifications</div>
-            <div class="btn btn-default">Export</div>
+            @Html.ActionLink("Export", "Export", "Database", new { @class = "btn btn-default" })
             <div class="btn btn-default">Set up financial reporting</div>
         </div>
     </div>
