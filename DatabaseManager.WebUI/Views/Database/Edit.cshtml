@@ -23,7 +23,11 @@
                 <div class="block-form-inline">
                     <label>@(property.DisplayName ?? property.PropertyName)</label>
                     <br />
-                    @if (property.PropertyName == "StudyTitle")
+                    @if (property.PropertyName == "DatabaseStatus")
+                    { 
+                        @Html.DropDownListFor(m => m.DatabaseStatus, new SelectList(new[] { "Active", "Developed", "Inactive", "Not Developed", "Prospective" }), new { @class = "form-control" })
+                    }
+                    else if (property.PropertyName == "StudyTitle")
                     {
                         @Html.TextArea(property.PropertyName, null, new { @class = "form-control", rows = 3 })
                     }
