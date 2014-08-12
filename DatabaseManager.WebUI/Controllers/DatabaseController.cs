@@ -77,28 +77,55 @@ namespace DatabaseManager.WebUI.Controllers
                 .Elements()
                 .ToDictionary(r => r.Name.ToString().Replace("SpaceDummyChar", " "), r => r.Value.ToString().Replace("SpaceDummyChar", " ")) : new Dictionary<string, string>();
 
-            return View(new EditViewModel { Database = db, AdditionalFields = additionalFields });
+            return View(new EditViewModel { 
+                AdditionalFieldsDictionary = additionalFields,
+                LawsonDatabaseID = db.LawsonDatabaseID,
+                OnServerStatus = db.OnServerStatus,
+                DatabaseStatus = db.DatabaseStatus,
+                Platform = db.Platform,
+                PIName = db.PIName,
+                Nickname = db.Nickname,
+                Developer = db.Developer,
+                StudyTitle = db.StudyTitle,
+                LawsonNumber = db.LawsonNumber,
+                REB = db.REB,
+                REBExpiry = db.REBExpiry,
+                LawsonApprovalDate = db.LawsonApprovalDate,
+                Researcher = db.Researcher,
+                InvoiceContact = db.InvoiceContact,
+                InvoiceContactEmail = db.InvoiceContactEmail,
+                AdditionalFields = db.AdditionalFields
+            });
         }
 
         [HttpPost, ValidateInput(false)]
-        public ActionResult Edit(LawsonDatabase db)
+        public ActionResult Edit(EditViewModel model)
         {
             if (ModelState.IsValid)
             {
-                repository.SaveDatabase(db);
-                addAlert("{0} has been saved", new string[] { db.Nickname }, ALERT_SUCCESS);
+                XDocument doc = XDocument.Parse(repository.LawsonDatabases
+                    .FirstOrDefault(m => m.LawsonDatabaseID == model.LawsonDatabaseID)
+                    .AdditionalFields);
+
+                foreach (var elem in model.AdditionalFieldsDictionary)
+                {
+                    doc.Descendants().FirstOrDefault(m => m.Name == elem.Key).Value = elem.Value;
+                }
+
+                repository.SaveDatabase(model.Database);
+                addAlert("{0} has been saved", new string[] { model.Nickname }, ALERT_SUCCESS);
                 return RedirectToAction("List");
             }
             else
             {
-                return View(db);
+                return View(model);
             }
         }
 
         public ViewResult Create()
         {
             ViewBag.AdditionalFields = new Dictionary<string, string>();
-            return View("Edit", new LawsonDatabase());
+            return View("Edit", new EditViewModel { AdditionalFieldsDictionary = new Dictionary<string, string>() });
         }
 
         [HttpPost]
