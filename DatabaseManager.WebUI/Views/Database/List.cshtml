@@ -9,7 +9,7 @@
 
 @section AddToHead
     {
-    <link rel="stylesheet" href="@Url.Content("//cdn.datatables.net/1.10.2/css/jquery.dataTables.css")"/>
+    <link rel="stylesheet" href="@Url.Content("//cdn.datatables.net/1.10.2/css/jquery.dataTables.css")" />
     <script src="@Url.Content("//cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js")"></script>
 }
 
@@ -40,27 +40,32 @@
             </thead>
             <tbody>
                 @foreach (var d in Model)
-                {   
+                {
                     <tr>
                         <td>@d.OnServerStatus</td>
                         <td>@d.DatabaseStatus</td>
                         <td>@Html.ActionLink(d.Nickname ?? "New Database", "Edit", new { d.LawsonDatabaseID })</td>
                         <td>@d.InvoiceContact</td>
-                        <td>@(d.REBExpiry != null ? d.REBExpiry.Value.ToString("yyyy/MM/dd") : "")</td>
-                        <td>@d.PIName</td>
                         <td>
-                            <div style="display: inline-block; float: left; width: 45%;">
-                                @using (Html.BeginForm("Delete", "Database"))
-                                {
-                                    @Html.Hidden("LawsonDatabaseID", d.LawsonDatabaseID)
-                                    <input type="submit" class="btn btn-block btn-xs btn-default" value="Delete" /> 
-                                }
-                            </div>
-                            <div style="display: inline-block; float: left; width: 50%; margin-left: 5%">
-                                @Html.ActionLink("Add Field", "AddColumn", new { d.LawsonDatabaseID }, new { @class = "btn btn-block btn-xs btn-default" })
-                            </div>
-                        </td>
-                    </tr>    
+                            <div>
+                            @(d.REBExpiry != null ? d.REBExpiry.Value.ToString("yyyy/MM/dd") : "")
+                            <span class="@ViewBag.REBExpiry[d.LawsonDatabaseID]"></span>
+                        </div>
+                    </td>
+                    <td>@d.PIName</td>
+                    <td>
+                        <div style="display: inline-block; float: left; width: 45%;">
+                            @using (Html.BeginForm("Delete", "Database"))
+                            {
+                                @Html.Hidden("LawsonDatabaseID", d.LawsonDatabaseID)
+                                <input type="submit" class="btn btn-block btn-xs btn-default" value="Delete" />
+                            }
+                        </div>
+                        <div style="display: inline-block; float: left; width: 50%; margin-left: 5%">
+                            @Html.ActionLink("Add Field", "AddColumn", new { d.LawsonDatabaseID }, new { @class = "btn btn-block btn-xs btn-default" })
+                        </div>
+                    </td>
+                </tr>
                 }
             </tbody>
         </table>

@@ -18,6 +18,7 @@ namespace DatabaseManager.WebUI.Controllers
     {
         public const string ALERT_SUCCESS = "alert-success";
         public const string ALERT_DANGER = "alert-danger";
+        public const string GLYPHICON_WARNING = "glyphicon glyphicon-warning-sign red";
         public const string DEFAULT_SORTING_ORDER = "Nickname";
 
         private ILawsonDatabaseRepository repository;
@@ -32,6 +33,28 @@ namespace DatabaseManager.WebUI.Controllers
         {
             var databases = repository.LawsonDatabases;
             ViewBag.SortingOrder = sortingOrder;
+            ViewBag.REBExpiry = new Dictionary<int, string>();
+
+            foreach (var db in databases)
+            {
+                if (db.REBExpiry != null)
+                {
+
+                    double difference = Math.Abs(((db.REBExpiry ?? DateTime.MinValue) - DateTime.Now).TotalDays);
+                    if (difference < 30)
+                    {
+                        ViewBag.REBExpiry[db.LawsonDatabaseID] = GLYPHICON_WARNING;
+                    }
+                    else
+                    {
+                        ViewBag.REBExpiry[db.LawsonDatabaseID] = "";
+                    }
+                }
+                else
+                {
+                    ViewBag.REBExpiry[db.LawsonDatabaseID] = "";
+                }
+            }
 
             return View(databases);
         }
