@@ -84,7 +84,6 @@ full-width {
     color: #e74c3c;
 }
 
-.border-red {
-    border-style: solid;
-    border-color: #e74c3c;
+.navbar-nomargin {
+    margin-bottom: 0px;
 }

@@ -7,6 +7,7 @@ using DatabaseManager.Domain.Entities;
 using DatabaseManager.Domain.Abstract;
 using DatabaseManager.Domain.Concrete;
 using DatabaseManager.WebUI.Infrastructure;
+using DatabaseManager.WebUI.Models;
 using System.Xml;
 using System.Xml.Linq;
 using System.Text;
@@ -30,11 +31,12 @@ namespace DatabaseManager.WebUI.Controllers
             ILawsonDatabaseRepository test = new EFLawsonDatabaseRepository();
         }
 
-        public ViewResult List(string sortingOrder = DEFAULT_SORTING_ORDER)
+        public ViewResult List(string sortingOrder = DEFAULT_SORTING_ORDER, bool welcome = false)
         {
             var databases = repository.LawsonDatabases;
             ViewBag.SortingOrder = sortingOrder;
             ViewBag.REBExpiry = new Dictionary<int, string>();
+            ViewBag.REBExpiredAlert = false;
 
             foreach (var db in databases)
             {
@@ -42,7 +44,11 @@ namespace DatabaseManager.WebUI.Controllers
                 {
 
                     double difference = Math.Abs(((db.REBExpiry ?? DateTime.MinValue) - DateTime.Now).TotalDays);
-                    if (difference < 30)
+                    if (db.REBExpiry < DateTime.Now && welcome)
+                    {
+                        ViewBag.REBExpiredAlert = true;
+                    }
+                    if (difference < 30 || db.REBExpiry < DateTime.Now)
                     {
                         ViewBag.REBExpiry[db.LawsonDatabaseID] = GLYPHICON_WARNING;
                     }
@@ -56,7 +62,10 @@ namespace DatabaseManager.WebUI.Controllers
                     ViewBag.REBExpiry[db.LawsonDatabaseID] = "";
                 }
             }
-
+            if (ViewBag.REBExpiredAlert)
+            {
+                ViewBag.ExpiredDbs = databases.Where(d => d.REBExpiry < DateTime.Now);
+            }
             return View(databases);
         }
 
@@ -64,11 +73,11 @@ namespace DatabaseManager.WebUI.Controllers
         {
             var db = repository.LawsonDatabases.FirstOrDefault(d => d.LawsonDatabaseID == lawsonDatabaseID);
             var tempFields = db.AdditionalFields;
-            ViewBag.AdditionalFields = tempFields != null ? XDocument.Parse(tempFields).Descendants("AdditionalFields")
+            var additionalFields = tempFields != null ? XDocument.Parse(tempFields).Descendants("AdditionalFields")
                 .Elements()
                 .ToDictionary(r => r.Name.ToString().Replace("SpaceDummyChar", " "), r => r.Value.ToString().Replace("SpaceDummyChar", " ")) : new Dictionary<string, string>();
 
-            return View(db);
+            return View(new EditViewModel { Database = db, AdditionalFields = additionalFields });
         }
 
         [HttpPost, ValidateInput(false)]

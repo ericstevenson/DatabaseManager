@@ -18,13 +18,39 @@
         $('#databaselist').dataTable({
             "order": [[2, "asc"]]
         });
+        //var table = document.getElementById("databaselist");
+        //var dates = new Array();
+        //for (var i = 1, row; row = table.rows[i]; i++) {
+        //    var dateString = row.cells[4].getElementsByTagName("div")[0].innerText || "";
+        //    var date;
+        //    var currentDate = new Date();
+        //    if (dateString == "") date = currentDate;
+        //    else date = new Date(dateString);
+        //    if (date < currentDate) {
+        //        dates.push(row.cells[2].innerText);
+        //    }
+        //}
+        //var alertText = "<div class='alert alert-danger'><h4>The following databases have expired REB's</h4><ul>";
+        //for (var i = 0; i < dates.length; i++) {
+        //    alertText += "<li>" + dates[i] + "</li>";
+        //}
+        //alertText += "</ul></div>";
+        //$(".panel-body").before($(alertText));
     });
 </script>
-
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h3>Databases</h3>
+@if (ViewBag.REBExpiredAlert)
+{ 
+    <div class="alert alert-danger">
+        <h5>The following databases have expired REB's</h5>
+        <ul>
+            @foreach (LawsonDatabase db in ViewBag.ExpiredDbs)
+            {
+                <li>@db.Nickname</li>
+            }
+        </ul>
     </div>
+}
+<div class="panel panel-default">
     <div class="panel-body">
         <table class="table table-striped table-condensed" id="databaselist">
             <thead>
@@ -35,7 +61,7 @@
                     <th>Invoice Contact</th>
                     <th>REB Expiry</th>
                     <th>Principal Investigator</th>
-                    <th style="text-align:center;">Action</th>
+                    <th style="text-align: center;">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -48,28 +74,28 @@
                         <td>@d.InvoiceContact</td>
                         <td>
                             <div>
-                            @(d.REBExpiry != null ? d.REBExpiry.Value.ToString("yyyy/MM/dd") : "")
-                            <span class="@ViewBag.REBExpiry[d.LawsonDatabaseID]"></span>
-                        </div>
-                    </td>
-                    <td>@d.PIName</td>
-                    <td>
-                        <div style="display: inline-block; float: left; width: 45%;">
-                            @using (Html.BeginForm("Delete", "Database"))
-                            {
-                                @Html.Hidden("LawsonDatabaseID", d.LawsonDatabaseID)
-                                <input type="submit" class="btn btn-block btn-xs btn-default" value="Delete" />
-                            }
-                        </div>
-                        <div style="display: inline-block; float: left; width: 50%; margin-left: 5%">
-                            @Html.ActionLink("Add Field", "AddColumn", new { d.LawsonDatabaseID }, new { @class = "btn btn-block btn-xs btn-default" })
-                        </div>
-                    </td>
-                </tr>
+                                @(d.REBExpiry != null ? d.REBExpiry.Value.ToString("yyyy/MM/dd") : "")
+                                <span class="@ViewBag.REBExpiry[d.LawsonDatabaseID]"></span>
+                            </div>
+                        </td>
+                        <td>@d.PIName</td>
+                        <td>
+                            <div style="display: inline-block; float: left; width: 45%;">
+                                @using (Html.BeginForm("Delete", "Database"))
+                                {
+                                    @Html.Hidden("LawsonDatabaseID", d.LawsonDatabaseID)
+                                    <input type="submit" class="btn btn-block btn-xs btn-default" value="Delete" />
+                                }
+                            </div>
+                            <div style="display: inline-block; float: left; width: 50%; margin-left: 5%">
+                                @Html.ActionLink("Add Field", "AddColumn", new { d.LawsonDatabaseID }, new { @class = "btn btn-block btn-xs btn-default" })
+                            </div>
+                        </td>
+                    </tr>
                 }
             </tbody>
         </table>
-        <div class="panel-footer">
+        <div class="panel-footer" style="margin-top: 3px;">
             @Html.ActionLink("New Database", "Create", "Database", new { @class = "btn btn-default" })
             <div class="btn btn-default">Set up email notifications</div>
             @Html.ActionLink("Export", "Export", "Database", new { @class = "btn btn-default" })

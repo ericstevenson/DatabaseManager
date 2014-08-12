@@ -23,21 +23,19 @@
             });
         }, 3000);
         $(document).ready(function () {
-            $("#alert-danger").append("<button type='button' class='close' data-dismiss='alert'><span aria-hidden='true'>×</span><span class='sr-only'>Close</span></button>");
+            $(".alert-danger").prepend("<button type='button' class='close' data-dismiss='alert'><span aria-hidden='true'>×</span><span class='sr-only'>Close</span></button>");
         });
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title</title>
 </head>
 <body>
-    <div class="navbar navbar-default" style="border-radius: 0px !important;" role="navigation">
+    <div class="navbar navbar-default navbar-nomargin" style="border-radius: 0px !important;" role="navigation">
         @Html.ActionLink("Lawson Informatics Database Management", "List", null, new { @class = "navbar-brand" })
         <ul class="nav navbar-nav navbar-right" style="margin-right: 10px;">
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Options<span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
-                    <li><a href="#">test</a></li>
-                    <li class="divider"></li>
                     <li>@Html.ActionLink("Log Out", "Logout", "Account", null, null)</li>
                 </ul>
             </li>
