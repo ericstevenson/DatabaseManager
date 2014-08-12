@@ -158,6 +158,10 @@ namespace DatabaseManager.WebUI.Controllers
             }
         }
 
+        /// <summary>
+        /// Exports database information to a file that can be opened in excel
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Export()
         {
             StringBuilder str = new ExcelStringBuilder().Build(repository.LawsonDatabases.OrderBy(d => d.DatabaseStatus));
