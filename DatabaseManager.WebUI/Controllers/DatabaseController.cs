@@ -19,6 +19,7 @@ namespace DatabaseManager.WebUI.Controllers
         public const string ALERT_SUCCESS = "alert-success";
         public const string ALERT_DANGER = "alert-danger";
         public const string GLYPHICON_WARNING = "glyphicon glyphicon-warning-sign red";
+        public const string BORDER_RED = "border-red";
         public const string DEFAULT_SORTING_ORDER = "Nickname";
 
         private ILawsonDatabaseRepository repository;

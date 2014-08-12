@@ -81,5 +81,10 @@ full-width {
 }
 
 .red {
-    color: red;
+    color: #e74c3c;
+}
+
+.border-red {
+    border-style: solid;
+    border-color: #e74c3c;
 }
