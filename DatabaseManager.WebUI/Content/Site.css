@@ -79,3 +79,7 @@ full-width {
     border-top-width: 0;
     border-bottom: 4px solid #000000;
 }
+
+.red {
+    color: red;
+}

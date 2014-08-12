@@ -42,8 +42,11 @@
                         </div>
                         <script type="text/javascript">
                             $(function () {
+                                var betterDate = $(".form-control#@property.PropertyName").val().split(' ')[0];
+                                $(".form-control#@property.PropertyName").val(betterDate);
+                                $("#@property.PropertyName").val(betterDate);
                                 $("#@property.PropertyName").datetimepicker({
-                                    format: 'YYYY/MM/DD',
+                                    format: 'DD/MM/YYYY',
                                     pickDate: true,
                                     pickTime: false,
                                     pick12HourFormat: false

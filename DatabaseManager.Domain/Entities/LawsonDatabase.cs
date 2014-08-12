@@ -23,7 +23,6 @@ namespace DatabaseManager.Domain.Entities
         [Display(Name="Principal Investigator")]
         public string PIName { get; set; }
         
-        [Display(Name = "Name")]
         public string Nickname { get; set; }
         
         public string Name { get; set; }
