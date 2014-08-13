@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -124,7 +124,7 @@ namespace DatabaseManager.WebUI.Controllers
 
             if (fieldName == "")
             {
-                addAlert("You did not enter a field name. Please enter the field name before continuing.", new string[]{}, ALERT_DANGER);
+                addAlert("You did not enter a field name. Please enter the field name before continuing.", new string[] { }, ALERT_DANGER);
                 return View(db);
             }
 
@@ -154,7 +154,7 @@ namespace DatabaseManager.WebUI.Controllers
                             continue;
                         }
                         doc.Root.Add(elem);
-                    } 
+                    }
 
                     database.AdditionalFields = doc.ToString();
                     repository.SaveDatabase(database);
@@ -223,7 +223,7 @@ namespace DatabaseManager.WebUI.Controllers
         /// <param name="alert">The string to be added. Should be formatting similarily to string.Format(string)</param>
         /// <param name="args">The arguments for the formatted string</param>
         /// <param name="alertClass">The bootstrap alert class to be added to the html tag</param>
-        public void addAlert(string alert, string[] args, string alertClass) 
+        public void addAlert(string alert, string[] args, string alertClass)
         {
             TempData["message"] = string.Format(alert, args);
             TempData["alert-class"] = alertClass;

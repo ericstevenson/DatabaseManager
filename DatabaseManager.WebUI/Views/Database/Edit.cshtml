@@ -1,4 +1,4 @@
-﻿@model DatabaseManager.WebUI.Models.EditViewModel
+﻿@model DatabaseManager.Domain.Entities.LawsonDatabase
 
 @{
     ViewBag.Title = "Edit " + Model.Nickname;
@@ -16,7 +16,6 @@
             <hr />
             @Html.HiddenFor(m => m.LawsonDatabaseID)
             @Html.HiddenFor(m => m.AdditionalFields)
-
             @foreach (var property in ViewData.ModelMetadata.Properties)
             {
                 if (property.PropertyName != "LawsonDatabaseID" && property.PropertyName != "AdditionalFields")
@@ -66,17 +65,16 @@
             <div style="clear: both;"></div>
             <h3 style="margin-left: 5%;">Custom Fields</h3>
             <hr />
-            @foreach (KeyValuePair<string, string> kv in Model.AdditionalFieldsDictionary)
+            @foreach (KeyValuePair<string, string> kv in ViewBag.AdditionalFields)
             {
                 <div class="block-form-inline">
                     <label>@kv.Key</label>
                     <br />
-                    <input type="text" name="@("Model.AdditionalFields["+kv.Key+"]")" value="@kv.Value" class="form-control" />
+                    @Html.TextBox(kv.Key, kv.Value, new { @class = "form-control" })
                 </div>
             }
         </div>
         <div class="panel-footer">
-
             <input type="submit" value="Save "class="btn btn-primary" />
             @Html.ActionLink("Add Column", "AddColumn", new { Model.LawsonDatabaseID }, new { @class = "btn btn-default" })
             @Html.ActionLink("Cancel and return to List", "List", null, new { @class = "btn btn-default" })
