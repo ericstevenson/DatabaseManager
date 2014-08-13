@@ -9,7 +9,7 @@
     <div class="panel-heading" style="text-align: center;">
         <h2>Edit @Model.Nickname</h2>
     </div>
-    @using (Html.BeginForm("Edit", "Database", FormMethod.Post, new { onsubmit = "verifyDates()" }))
+    @using (Html.BeginForm("Edit", "Database", FormMethod.Post, new { onsubmit = "verifyDates();" }))
     {
         <div class="panel-body form-total">
             <h3 style="margin-left: 5%;">Default Fields</h3>
@@ -17,93 +17,52 @@
             @Html.HiddenFor(m => m.LawsonDatabaseID)
             @Html.HiddenFor(m => m.AdditionalFields)
 
-            <div class="block-form-inline">
-                <label>Status on Server</label>
-                @Html.TextBoxFor(m => m.OnServerStatus, new { @class = "form-control" })
-            </div>
-
-            <div class="block-form-inline">
-                <label>Database Status</label>
-                @Html.DropDownListFor(m => m.DatabaseStatus, new SelectList(new[] { "Active", "Developed", "Inactive", "Not Developed", "Prospective" }), new { @class = "form-control" })
-            </div>
-
-            <div class="block-form-inline">
-                <label>Platform</label>
-                @Html.TextBoxFor(m => m.Platform, new { @class = "form-control" })
-            </div>
-
-            <div class="block-form-inline">
-                <label>Principal Investigator</label>
-                @Html.TextBoxFor(m => m.PIName, new { @class = "form-control" })
-            </div>
-
-            <div class="block-form-inline">
-                <label>Nickname</label>
-                @Html.TextBoxFor(m => m.Nickname, new { @class = "form-control" })
-            </div>
-
-            <div class="block-form-inline">
-                <label>Name</label>
-                @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
-            </div>
-
-            <div class="block-form-inline">
-                <label>Developer</label>
-                @Html.TextBoxFor(m => m.Developer, new { @class = "form-control" })
-            </div>
-
-            <div class="block-form-inline">
-                <label>Study Title</label>
-                @Html.TextAreaFor(m => m.StudyTitle, new { @class = "form-control", rows = 3 })
-            </div>
-
-            <div class="block-form-inline">
-                <label>REB</label>
-                @Html.TextBoxFor(m => m.REB, new { @class = "form-control" })
-            </div>
-
-            <div class="block-form-inline">
-                <label>Lawson Number</label>
-                @Html.TextBoxFor(m => m.LawsonNumber, new { @class = "form-control" })
-            </div>
-
-            <div class="block-form-inline">
-                <label>REB Expiry Date</label>
-                <div class="form-group">
-                    <div class="input-group date" id="REBExpiry">
-                        @Html.TextBoxFor(m => m.REBExpiry, new { @class = "form-control", id = "REBExpiry" })
-                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
-                        </span>
+            @foreach (var property in ViewData.ModelMetadata.Properties)
+            {
+                if (property.PropertyName != "LawsonDatabaseID" && property.PropertyName != "AdditionalFields")
+                {
+                    <div class="block-form-inline">
+                        <label>@(property.DisplayName ?? property.PropertyName)</label>
+                        <br />
+                        @if (property.PropertyName == "DatabaseStatus")
+                        {
+                            @Html.DropDownListFor(m => m.DatabaseStatus, new SelectList(new[] { "Active", "Developed", "Inactive", "Not Developed", "Prospective" }), new { @class = "form-control" })
+                        }
+                        else if (property.PropertyName == "StudyTitle")
+                        {
+                            @Html.TextArea(property.PropertyName, null, new { @class = "form-control", rows = 3 })
+                        }
+                        else if ((property.DisplayName ?? property.PropertyName).Contains("Date"))
+                        {
+                            <div class="form-group">
+                                <div class="input-group date" id="@property.PropertyName">
+                                    @Html.TextBox(property.PropertyName, null, new { @class = "form-control date-item" })
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+                            <script type="text/javascript">
+                                $(function () {
+                                    var betterDate = $(".form-control#@property.PropertyName").val().split(' ')[0];
+                                    $(".form-control#@property.PropertyName").val(betterDate);
+                                    $("#@property.PropertyName").val(betterDate);
+                                    $("#@property.PropertyName").datetimepicker({
+                                        format: 'DD/MM/YYYY',
+                                        pickDate: true,
+                                        pickTime: false,
+                                        pick12HourFormat: false
+                                    });
+                                });
+                            </script>
+                        }
+                        else
+                        {
+                            @Html.TextBox(property.PropertyName, null, new { @class = "form-control" })
+                        }
                     </div>
-                </div>
-            </div>
-
-            <div class="block-form-inline">
-                <label>Lawson Approval Date</label>
-                <div class="form-group">
-                    <div class="input-group date" id="LawsonApprovalDate">
-                        @Html.TextBoxFor(m => m.LawsonApprovalDate, new { @class = "form-control", id = "LawsonApprovalDate"  })
-                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
-                        </span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="block-form-inline">
-                <label>Researcher</label>
-                @Html.TextBoxFor(m => m.Researcher, new { @class = "form-control" })
-            </div>
-
-            <div class="block-form-inline">
-                <label>Invoice Contact</label>
-                @Html.TextBoxFor(m => m.InvoiceContact, new { @class = "form-control" })
-            </div>
-
-            <div class="block-form-inline">
-                <label>Invoice Contact Email</label>
-                @Html.TextBoxFor(m => m.InvoiceContactEmail, new { @class = "form-control" })
-            </div>
-            
+                }
+            }
             <div style="clear: both;"></div>
             <h3 style="margin-left: 5%;">Custom Fields</h3>
             <hr />
@@ -117,47 +76,32 @@
             }
         </div>
         <div class="panel-footer">
-            <input type="submit" value="Save" class="btn btn-primary" />
+
+            <input type="submit" value="Save "class="btn btn-primary" />
             @Html.ActionLink("Add Column", "AddColumn", new { Model.LawsonDatabaseID }, new { @class = "btn btn-default" })
             @Html.ActionLink("Cancel and return to List", "List", null, new { @class = "btn btn-default" })
         </div>
-       
+
     }
+    <script type="text/javascript">
+        function verifyDates() {
+            var dateElems = document.getElementsByClassName("date-item");
+            for (var x = 0; x < dateElems.length; x++) {
+                if (!isValidDate(dateElems[x].value)) dateElems[x].value = "";
+            }
+        }
+
+        function isValidDate(str) {
+            var t = str.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+            if (str === "") return true;
+            if (t !== null) {
+                var d = +t[1], m = +t[2], y = +t[3];
+                var date = new Date(y, m - 1, d);
+                if (date.getFullYear() === y && date.getMonth() === m - 1) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    </script>
 </div>
-<script type="text/javascript">
-    function verifyDates() {
-        $(".date > input").each(function () {
-            var input = $(this).val();
-            if (!isValidDate(input)) $(this).val("");
-        });
-    }
-
-    function isValidDate(date) {
-        var matches = /(\d{4})[-\/](\d{2})[-\/](\d{2})/.exec(date);
-        if (matches == null) return false;
-        var day = matches[3];
-        var month = matches[2] - 1;
-        var year = matches[1];
-        var composedDate = new Date(year, month, day);
-        return composedDate.getDate() == day &&
-                 composedDate.getMonth() == month &&
-                 composedDate.getFullYear() == year;
-    }
-
-
-    function dateFormatFixer(fieldName) {
-        var betterDate = $(".form-control#" + fieldName).val().split(' ')[0];
-        $(".form-control#" + fieldName).val(betterDate);
-        $("#" + fieldName).val(betterDate);
-        $("#" + fieldName).datetimepicker({
-            format: 'YYYY/MM/DD',
-            pickDate: true,
-            pickTime: false,
-            pick12HourFormat: false
-        });
-    };
-
-    window.onload = dateFormatFixer("REBExpiry");
-    window.onload = dateFormatFixer("LawsonApprovalDate");
-</script>
-
