@@ -7,7 +7,6 @@ using DatabaseManager.Domain.Entities;
 using DatabaseManager.Domain.Abstract;
 using DatabaseManager.Domain.Concrete;
 using DatabaseManager.WebUI.Infrastructure;
-using DatabaseManager.WebUI.Models;
 using System.Xml;
 using System.Xml.Linq;
 using System.Text;
@@ -73,59 +72,32 @@ namespace DatabaseManager.WebUI.Controllers
         {
             var db = repository.LawsonDatabases.FirstOrDefault(d => d.LawsonDatabaseID == lawsonDatabaseID);
             var tempFields = db.AdditionalFields;
-            var additionalFields = tempFields != null ? XDocument.Parse(tempFields).Descendants("AdditionalFields")
+            ViewBag.AdditionalFields = tempFields != null ? XDocument.Parse(tempFields).Descendants("AdditionalFields")
                 .Elements()
                 .ToDictionary(r => r.Name.ToString().Replace("SpaceDummyChar", " "), r => r.Value.ToString().Replace("SpaceDummyChar", " ")) : new Dictionary<string, string>();
 
-            return View(new EditViewModel { 
-                AdditionalFieldsDictionary = additionalFields,
-                LawsonDatabaseID = db.LawsonDatabaseID,
-                OnServerStatus = db.OnServerStatus,
-                DatabaseStatus = db.DatabaseStatus,
-                Platform = db.Platform,
-                PIName = db.PIName,
-                Nickname = db.Nickname,
-                Developer = db.Developer,
-                StudyTitle = db.StudyTitle,
-                LawsonNumber = db.LawsonNumber,
-                REB = db.REB,
-                REBExpiry = db.REBExpiry,
-                LawsonApprovalDate = db.LawsonApprovalDate,
-                Researcher = db.Researcher,
-                InvoiceContact = db.InvoiceContact,
-                InvoiceContactEmail = db.InvoiceContactEmail,
-                AdditionalFields = db.AdditionalFields
-            });
+            return View(db);
         }
 
         [HttpPost, ValidateInput(false)]
-        public ActionResult Edit(EditViewModel model)
+        public ActionResult Edit(LawsonDatabase db)
         {
             if (ModelState.IsValid)
             {
-                XDocument doc = XDocument.Parse(repository.LawsonDatabases
-                    .FirstOrDefault(m => m.LawsonDatabaseID == model.LawsonDatabaseID)
-                    .AdditionalFields);
-
-                foreach (var elem in model.AdditionalFieldsDictionary)
-                {
-                    doc.Descendants().FirstOrDefault(m => m.Name == elem.Key).Value = elem.Value;
-                }
-
-                repository.SaveDatabase(model.Database);
-                addAlert("{0} has been saved", new string[] { model.Nickname }, ALERT_SUCCESS);
+                repository.SaveDatabase(db);
+                addAlert("{0} has been saved", new string[] { db.Nickname }, ALERT_SUCCESS);
                 return RedirectToAction("List");
             }
             else
             {
-                return View(model);
+                return View(db);
             }
         }
 
         public ViewResult Create()
         {
             ViewBag.AdditionalFields = new Dictionary<string, string>();
-            return View("Edit", new EditViewModel { AdditionalFieldsDictionary = new Dictionary<string, string>() });
+            return View("Edit", new LawsonDatabase());
         }
 
         [HttpPost]
