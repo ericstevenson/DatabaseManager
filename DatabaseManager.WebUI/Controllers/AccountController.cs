@@ -29,7 +29,7 @@ namespace DatabaseManager.WebUI.Controllers
         }
 
         [HttpPost]
-        public ActionResult Login(LoginViewModel model, string returnUrl)
+        public ActionResult Login(LoginViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -42,7 +42,7 @@ namespace DatabaseManager.WebUI.Controllers
                 }
                 else if (authProvider.Authenticate(model.Username, model.Password, user.Salt, user.PasswordHash))
                 {
-                    return Redirect(returnUrl ?? Url.Action("List", "Database"));
+                    return Redirect(Url.Action("List", "Database", new { welcome = true }));
                 }
                 else
                 {
