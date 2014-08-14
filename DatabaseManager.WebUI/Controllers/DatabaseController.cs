@@ -27,7 +27,6 @@ namespace DatabaseManager.WebUI.Controllers
         public DatabaseController(ILawsonDatabaseRepository repo)
         {
             repository = repo;
-            ILawsonDatabaseRepository test = new EFLawsonDatabaseRepository();
         }
 
         public ViewResult List(string sortingOrder = DEFAULT_SORTING_ORDER, bool welcome = false)

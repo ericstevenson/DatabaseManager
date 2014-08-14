@@ -142,14 +142,17 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DatabaseController.cs" />
+    <Compile Include="Controllers\EmailController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\Abstract\IAuthProvider.cs" />
+    <Compile Include="Infrastructure\Abstract\IEmailProvider.cs" />
     <Compile Include="Infrastructure\Authentication\HashComputer.cs" />
     <Compile Include="Infrastructure\Authentication\PasswordManager.cs" />
     <Compile Include="Infrastructure\Authentication\SaltGenerator.cs" />
     <Compile Include="Infrastructure\Concrete\FormsAuthProvider.cs" />
+    <Compile Include="Infrastructure\Concrete\SimpleEmailSender.cs" />
     <Compile Include="Infrastructure\ExcelStringBuilder.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
@@ -169,6 +172,7 @@
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Shared\_NotAuthenticatedLayout.cshtml" />
     <Content Include="Views\Database\List.cshtml" />
+    <Content Include="Views\Email\SendEmail.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
