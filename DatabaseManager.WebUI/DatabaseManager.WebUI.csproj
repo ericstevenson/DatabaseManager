@@ -188,6 +188,10 @@
       <Project>{3d92b67d-2fa8-498b-ac5f-7475d476a89c}</Project>
       <Name>DatabaseManager.Domain</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Resources\Resources.csproj">
+      <Project>{d05dbd96-1a9e-44e3-8ed1-2550b9c19f6a}</Project>
+      <Name>Resources</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

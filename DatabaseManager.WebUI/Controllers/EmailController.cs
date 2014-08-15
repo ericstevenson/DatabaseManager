@@ -22,28 +22,31 @@ namespace DatabaseManager.WebUI.Controllers
             repository = repo;
         }
 
-        public ViewResult SendEmail()
+        public void SendEmail(string from = null)
         {
-            var context = System.Web.HttpContext.Current;
-            string url = string.Format("{0}://{1}{2}{3}",
-                                   context.Request.Url.Scheme,
-                                   context.Request.Url.Host,
-                                   context.Request.Url.Port == 80
-                                       ? string.Empty
-                                       : ":" + context.Request.Url.Port,
-                                   context.Request.ApplicationPath);
-            IEnumerable<LawsonDatabase> databases = dbRepository.LawsonDatabases.Where(d => d.REBExpiry != null && (d.REBExpiry.Value.Date == DateTime.Today.AddDays(1) || Math.Abs((d.REBExpiry.Value.Date - DateTime.Today).Days) == 30));
-            List<Tuple<string, string>> dateAndName = new List<Tuple<string,string>>();
-            foreach(var entry in databases)
+            if (from == Resources.Passwords.QUERY_KEY)
             {
-                dateAndName.Add(Tuple.Create(entry.Nickname, entry.REBExpiry.Value.ToShortDateString()));
+                var context = System.Web.HttpContext.Current;
+                string url = string.Format("{0}://{1}{2}{3}",
+                                       context.Request.Url.Scheme,
+                                       context.Request.Url.Host,
+                                       context.Request.Url.Port == 80
+                                           ? string.Empty
+                                           : ":" + context.Request.Url.Port,
+                                       context.Request.ApplicationPath);
+                IEnumerable<LawsonDatabase> databases = dbRepository.LawsonDatabases.Where(d => d.REBExpiry != null && (d.REBExpiry.Value.Date == DateTime.Today.AddDays(1) || Math.Abs((d.REBExpiry.Value.Date - DateTime.Today).Days) == 30));
+                List<Tuple<string, string>> dateAndName = new List<Tuple<string, string>>();
+                foreach (var entry in databases)
+                {
+                    dateAndName.Add(Tuple.Create(entry.Nickname, entry.REBExpiry.Value.ToShortDateString()));
+                }
+                if (dateAndName.Count == 0)
+                {
+                    return;
+                }
+                repository.SaveEmail(emailSender.SendEmail(dateAndName, url));
             }
-            if (dateAndName.Count == 0)
-            {
-                return View();
-            }
-            repository.SaveEmail(emailSender.SendEmail(dateAndName, url));
-            return View();
+            else RedirectToAction("List", "Database");
         }
     }
 }

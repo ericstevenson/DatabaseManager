@@ -14,8 +14,8 @@
         <div class="panel-body form-total">
             <h3 style="margin-left: 5%;">Default Fields</h3>
             <hr />
+            @int i = 0;
             @Html.HiddenFor(m => m.LawsonDatabaseID)
-            @Html.HiddenFor(m => m.AdditionalFields)
             @foreach (var property in ViewData.ModelMetadata.Properties)
             {
                 if (property.PropertyName != "LawsonDatabaseID" && property.PropertyName != "AdditionalFields")
