@@ -14,7 +14,6 @@
         <div class="panel-body form-total">
             <h3 style="margin-left: 5%;">Default Fields</h3>
             <hr />
-            @Html.HiddenFor(m => m.AdditionalFields)
             @Html.HiddenFor(m => m.LawsonDatabaseID)
             @foreach (var property in ViewData.ModelMetadata.Properties)
             {

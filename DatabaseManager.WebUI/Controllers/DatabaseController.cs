@@ -128,19 +128,20 @@ namespace DatabaseManager.WebUI.Controllers
             db.Researcher = model.Researcher;
             db.PIName = model.PIName;
             db.Platform = model.Platform;
-            db.LawsonDatabaseID = model.LawsonDatabaseID;
             db.Name = model.Name;
 
             Dictionary<string, string> additionalFields = model.AdditionalFields;
-            XDocument doc = new XDocument();
-            XElement root = new XElement("AdditionalFields");
-            foreach (var kvb in model.AdditionalFields)
+            if (model.AdditionalFields != null)
             {
-                root.Add(new XElement(toSafeFieldName(kvb.Key), toSafeFieldName(kvb.Value)));
+                XDocument doc = new XDocument();
+                XElement root = new XElement("AdditionalFields");
+                foreach (var kvb in model.AdditionalFields)
+                {
+                    root.Add(new XElement(toSafeFieldName(kvb.Key), toSafeFieldName(kvb.Value)));
+                }
+                doc.Add(root);
+                db.AdditionalFields = doc.ToString();
             }
-            doc.Add(root);
-            db.AdditionalFields = doc.ToString();
-
             if (ModelState.IsValid)
             {
                 repository.SaveDatabase(db);
@@ -149,7 +150,7 @@ namespace DatabaseManager.WebUI.Controllers
             }
             else
             {
-                return View(model);
+                return RedirectToAction("Edit", new { LawsonDatabaseId = db.LawsonDatabaseID });
             }
         }
 
@@ -188,13 +189,13 @@ namespace DatabaseManager.WebUI.Controllers
         public ViewResult AddColumn(int lawsonDatabaseID)
         {
             LawsonDatabase database = repository.LawsonDatabases.FirstOrDefault(d => d.LawsonDatabaseID == lawsonDatabaseID);
-            return View(database);
+            return View(database ?? new LawsonDatabase());
         }
 
         [HttpPost]
         public ActionResult AddColumn(string save, int lawsonDatabaseID, string fieldName, string fieldValue)
         {
-            LawsonDatabase db = repository.LawsonDatabases.FirstOrDefault(d => d.LawsonDatabaseID == lawsonDatabaseID);
+            LawsonDatabase db = repository.LawsonDatabases.FirstOrDefault(d => d.LawsonDatabaseID == lawsonDatabaseID) ?? new LawsonDatabase();
 
             if (fieldName == "")
             {
