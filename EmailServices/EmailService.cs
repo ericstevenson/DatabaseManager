@@ -13,7 +13,6 @@ namespace EmailServices
         {
             const string queryString = Resources.Passwords.QUERY_KEY;
             const string url = "http://localhost:50270/Email/SendEmail?from=" + queryString;
-           // Uri uri = new Uri(url + "/Email/SendEmail?from=" + queryString);
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
             return;

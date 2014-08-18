@@ -76,13 +76,16 @@
   <ItemGroup>
     <Compile Include="Abstract\IEmailRepository.cs" />
     <Compile Include="Abstract\ILawsonDatabaseRepository.cs" />
+    <Compile Include="Abstract\IPeriodicFinanceRepository.cs" />
     <Compile Include="Abstract\IUserRepository.cs" />
     <Compile Include="Concrete\EFDbContext.cs" />
     <Compile Include="Concrete\EFEmailRepository.cs" />
     <Compile Include="Concrete\EFLawsonDatabaseRepository.cs" />
+    <Compile Include="Concrete\EFPeriodicFinanceRepository.cs" />
     <Compile Include="Concrete\EFUserRepository.cs" />
     <Compile Include="Entities\Email.cs" />
     <Compile Include="Entities\LawsonDatabase.cs" />
+    <Compile Include="Entities\PeriodicFinance.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Migrations\201408141340577_InitialMigrations.cs" />
     <Compile Include="Migrations\201408141340577_InitialMigrations.Designer.cs">

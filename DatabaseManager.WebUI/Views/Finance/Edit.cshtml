@@ -1,0 +1,53 @@
+﻿@model DatabaseManager.WebUI.Models.EditFinanceViewModel
+
+@{
+    ViewBag.Title = "Finances for " + Model.Database.Nickname;
+}
+
+<div class="panel">
+    <div class="panel-heading" style="text-align: center;">
+        <h2>@Model.Database.Nickname Finances</h2>
+    </div>
+    <div class="panel-body form-total">
+        @for (int i = 0; i < Model.Finances.Count; i++)
+        {   
+            <div>
+                <div class="form-group col-md-4">
+                    <div class="input-group date" id="@Model.Finances[i].PeriodStart">
+                        @Html.TextBoxFor(m => m.Finances[i].PeriodStart, new { @class = "form-control date-item" })
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    <div class="input-group date" id="@Model.Finances[i].PeriodEnd">
+                        @Html.TextBoxFor(m => m.Finances[i].PeriodEnd, new { @class = "form-control date-item" })
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                    </div>
+                <div class="form-group col-md-4">
+                    <div class="input-group" id="@Model.Finances[i].MonthlyRate">
+                        @Html.TextBoxFor(m => m.Finances[i].MonthlyRate, new { @class = "form-control" })
+                    </div>
+                </div>
+               <script type="text/javascript">
+                    $(".date-item").each(function () {
+                        var betterDate = $("input").val().split(' ')[0];
+                        $("input").val(betterDate);
+                        $("input").val(betterDate);
+                        $("input").datetimepicker({
+                            format: 'DD/MM/YYYY',
+                            pickDate: true,
+                            pickTime: false,
+                            pick12HourFormat: false
+                        });
+                    });
+                </script>
+            </div>
+        }
+    </div>
+</div>
+

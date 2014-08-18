@@ -13,5 +13,6 @@ namespace DatabaseManager.Domain.Concrete
         public DbSet<LawsonDatabase> LawsonDatabases { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Email> Emails { get; set; }
+        public DbSet<PeriodicFinance> PeriodicFinances { get; set; }
     }
 }

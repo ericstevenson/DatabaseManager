@@ -71,17 +71,6 @@ namespace DatabaseManager.WebUI.Controllers
         public ViewResult Edit(int lawsonDatabaseID)
         {
             var db = repository.LawsonDatabases.FirstOrDefault(d => d.LawsonDatabaseID == lawsonDatabaseID);
-            var tempFields = db.AdditionalFields;
-            ViewBag.AdditionalFields = tempFields != null ? XDocument.Parse(tempFields).Descendants("AdditionalFields")
-                .Elements()
-                .ToDictionary(r => toSafeFieldName(r.Name.ToString()), r => toSafeFieldName(r.Value.ToString())) : new Dictionary<string, string>();
-
-            return View(db);
-        }
-
-        public ViewResult EditTemp(int lawsonDatabaseID)
-        {
-            var db = repository.LawsonDatabases.FirstOrDefault(d => d.LawsonDatabaseID == lawsonDatabaseID);
             string tempFields = db.AdditionalFields;
             var x = tempFields != null ? XDocument.Parse(tempFields).Descendants("AdditionalFields")
                 .Elements()
@@ -110,7 +99,7 @@ namespace DatabaseManager.WebUI.Controllers
         }
 
         [HttpPost, ValidateInput(false)]
-        public ActionResult EditTemp(EditViewModel model)
+        public ActionResult Edit(EditViewModel model)
         {
             
             LawsonDatabase db = repository.LawsonDatabases.FirstOrDefault(m => m.LawsonDatabaseID == model.LawsonDatabaseID);
@@ -145,7 +134,7 @@ namespace DatabaseManager.WebUI.Controllers
             if (ModelState.IsValid)
             {
                 repository.SaveDatabase(db);
-                addAlert("{0} has been saved", new string[] { db.Nickname }, ALERT_SUCCESS);
+                addAlert("{0} has been saved", new string[] { db.Nickname ?? "Database" }, ALERT_SUCCESS);
                 return RedirectToAction("List");
             }
             else
@@ -154,25 +143,15 @@ namespace DatabaseManager.WebUI.Controllers
             }
         }
 
-        [HttpPost, ValidateInput(false)]
-        public ActionResult Edit(LawsonDatabase db)
-        {
-            if (ModelState.IsValid)
-            {
-                repository.SaveDatabase(db);
-                addAlert("{0} has been saved", new string[] { db.Nickname }, ALERT_SUCCESS);
-                return RedirectToAction("List");
-            }
-            else
-            {
-                return View(db);
-            }
-        }
-
         public ViewResult Create()
         {
-            ViewBag.AdditionalFields = new Dictionary<string, string>();
-            return View("Edit", new LawsonDatabase());
+            LawsonDatabase db = new LawsonDatabase();
+            int lawsonDatabaseId = repository.SaveDatabase(db);
+            return View("Edit", new EditViewModel
+            {
+                AdditionalFields = new Dictionary<string, string>(),
+                LawsonDatabaseID = lawsonDatabaseId
+            });
         }
 
         [HttpPost]
@@ -181,7 +160,7 @@ namespace DatabaseManager.WebUI.Controllers
             LawsonDatabase dbToDelete = repository.DeleteDatabase(lawsonDatabaseId);
             if (dbToDelete != null)
             {
-                addAlert("{0} has been deleted", new string[] { dbToDelete.Nickname }, ALERT_SUCCESS);
+                addAlert("{0} has been deleted", new string[] { dbToDelete.Nickname ?? "Database" }, ALERT_SUCCESS);
             }
             return RedirectToAction("List");
         }
@@ -260,7 +239,7 @@ namespace DatabaseManager.WebUI.Controllers
 
                 db.AdditionalFields = doc.ToString();
                 repository.SaveDatabase(db);
-                addAlert("{0} successfully added to {1}", new string[] { fieldName, db.Nickname }, ALERT_SUCCESS);
+                addAlert("{0} successfully added to {1}", new string[] { fieldName, db.Nickname ?? "Database" }, ALERT_SUCCESS);
                 return RedirectToAction("List");
             }
         }

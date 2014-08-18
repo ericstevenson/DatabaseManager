@@ -17,7 +17,7 @@ namespace DatabaseManager.Domain.Concrete
             get { return context.LawsonDatabases; }
         }
 
-        public void SaveDatabase(LawsonDatabase db)
+        public int SaveDatabase(LawsonDatabase db)
         {
             if (db.LawsonDatabaseID == 0)
             {
@@ -28,6 +28,7 @@ namespace DatabaseManager.Domain.Concrete
                 context.Entry(db).State = System.Data.Entity.EntityState.Modified;
             }
             context.SaveChanges();
+            return db.LawsonDatabaseID;
         }
 
         public LawsonDatabase DeleteDatabase(int lawsonDatabaseId)

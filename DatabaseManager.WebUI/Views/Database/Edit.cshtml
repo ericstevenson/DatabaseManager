@@ -7,9 +7,9 @@
 
 <div class="panel">
     <div class="panel-heading" style="text-align: center;">
-        <h2>Edit @Model.Nickname</h2>
+        <h2>Edit @(Model.Nickname ?? "New Database")</h2>
     </div>
-    @using (Html.BeginForm("EditTemp", "Database", FormMethod.Post, new { onsubmit = "verifyDates();" }))
+    @using (Html.BeginForm("Edit", "Database", FormMethod.Post, new { onsubmit = "verifyDates();" }))
     {
         <div class="panel-body form-total">
             <h3 style="margin-left: 5%;">Default Fields</h3>
@@ -46,7 +46,7 @@
                                     $(".form-control#@property.PropertyName").val(betterDate);
                                     $("#@property.PropertyName").val(betterDate);
                                     $("#@property.PropertyName").datetimepicker({
-                                        format: 'DD/MM/YYYY',
+                                        format: 'YYYY/MM/DD',
                                         pickDate: true,
                                         pickTime: false,
                                         pick12HourFormat: false
@@ -88,10 +88,10 @@
         }
 
         function isValidDate(str) {
-            var t = str.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+            var t = str.match(/^(\d{4})\/(\d{2})\/(\d{2})$/);
             if (str === "") return true;
             if (t !== null) {
-                var d = +t[1], m = +t[2], y = +t[3];
+                var y = +t[1], m = +t[2], d = +t[3];
                 var date = new Date(y, m - 1, d);
                 if (date.getFullYear() === y && date.getMonth() === m - 1) {
                     return true;

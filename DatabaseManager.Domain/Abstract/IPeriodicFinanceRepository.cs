@@ -7,12 +7,8 @@ using DatabaseManager.Domain.Entities;
 
 namespace DatabaseManager.Domain.Abstract
 {
-    public interface ILawsonDatabaseRepository
+    public interface IPeriodicFinanceRepository
     {
-        IEnumerable<LawsonDatabase> LawsonDatabases { get; }
-
-        int SaveDatabase(LawsonDatabase db);
-
-        LawsonDatabase DeleteDatabase(int lawsonDatabaseId);
+        IEnumerable<PeriodicFinance> PeriodicFinances { get; }
     }
 }

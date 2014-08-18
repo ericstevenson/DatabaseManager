@@ -39,6 +39,7 @@ namespace DatabaseManager.WebUI.Infrastructure
             kernel.Bind<IAuthProvider>().To<FormsAuthProvider>();
             kernel.Bind<IEmailProvider>().To<SimpleEmailSender>();
             kernel.Bind<IEmailRepository>().To<EFEmailRepository>();
+            kernel.Bind<IPeriodicFinanceRepository>().To<EFPeriodicFinanceRepository>();
         }
     }
 }

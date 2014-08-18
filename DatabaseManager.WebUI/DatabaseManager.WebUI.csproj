@@ -143,6 +143,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DatabaseController.cs" />
     <Compile Include="Controllers\EmailController.cs" />
+    <Compile Include="Controllers\FinanceController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -155,6 +156,7 @@
     <Compile Include="Infrastructure\Concrete\SimpleEmailSender.cs" />
     <Compile Include="Infrastructure\ExcelStringBuilder.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
+    <Compile Include="Models\EditFinanceViewModel.cs" />
     <Compile Include="Models\EditViewModel.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="Models\RegisterViewModel.cs" />
@@ -166,14 +168,14 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Database\Edit.cshtml" />
     <Content Include="Views\Database\AddColumn.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Shared\_NotAuthenticatedLayout.cshtml" />
     <Content Include="Views\Database\List.cshtml" />
     <Content Include="Views\Email\SendEmail.cshtml" />
-    <Content Include="Views\Database\EditTemp.cshtml" />
+    <Content Include="Views\Database\Edit.cshtml" />
+    <Content Include="Views\Finance\Edit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

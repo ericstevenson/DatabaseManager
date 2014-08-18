@@ -38,11 +38,11 @@ namespace DatabaseManager.Domain.Entities
         public string LawsonNumber { get; set; }
         
         [Display(Name = "REB Expiry Date")]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
         public DateTime? REBExpiry { get; set; }
         
         [Display(Name = "Lawson Approval Date")]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
         public DateTime? LawsonApprovalDate { get; set; }
         
         public string Researcher { get; set; }
