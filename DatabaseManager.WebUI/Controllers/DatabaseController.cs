@@ -7,6 +7,7 @@ using DatabaseManager.Domain.Entities;
 using DatabaseManager.Domain.Abstract;
 using DatabaseManager.Domain.Concrete;
 using DatabaseManager.WebUI.Infrastructure;
+using DatabaseManager.WebUI.Models;
 using System.Xml;
 using System.Xml.Linq;
 using System.Text;
@@ -73,9 +74,83 @@ namespace DatabaseManager.WebUI.Controllers
             var tempFields = db.AdditionalFields;
             ViewBag.AdditionalFields = tempFields != null ? XDocument.Parse(tempFields).Descendants("AdditionalFields")
                 .Elements()
-                .ToDictionary(r => r.Name.ToString().Replace("SpaceDummyChar", " "), r => r.Value.ToString().Replace("SpaceDummyChar", " ")) : new Dictionary<string, string>();
+                .ToDictionary(r => toSafeFieldName(r.Name.ToString()), r => toSafeFieldName(r.Value.ToString())) : new Dictionary<string, string>();
 
             return View(db);
+        }
+
+        public ViewResult EditTemp(int lawsonDatabaseID)
+        {
+            var db = repository.LawsonDatabases.FirstOrDefault(d => d.LawsonDatabaseID == lawsonDatabaseID);
+            string tempFields = db.AdditionalFields;
+            var x = tempFields != null ? XDocument.Parse(tempFields).Descendants("AdditionalFields")
+                .Elements()
+                .ToDictionary(r => rawName(r.Name.ToString()), r => rawName(r.Value.ToString())) : new Dictionary<string, string>();
+
+            return View(new EditViewModel
+            {
+                LawsonApprovalDate = db.LawsonApprovalDate,
+                LawsonNumber = db.LawsonNumber,
+                DatabaseStatus = db.DatabaseStatus,
+                Developer = db.Developer,
+                InvoiceContact = db.InvoiceContact,
+                InvoiceContactEmail = db.InvoiceContactEmail,
+                StudyTitle = db.StudyTitle,
+                OnServerStatus = db.OnServerStatus,
+                Nickname = db.Nickname,
+                REB = db.REB,
+                REBExpiry = db.REBExpiry,
+                Researcher = db.Researcher,
+                PIName = db.PIName,
+                Platform = db.Platform,
+                LawsonDatabaseID = db.LawsonDatabaseID,
+                Name = db.Name,
+                AdditionalFields = x
+            });
+        }
+
+        [HttpPost, ValidateInput(false)]
+        public ActionResult EditTemp(EditViewModel model)
+        {
+            
+            LawsonDatabase db = repository.LawsonDatabases.FirstOrDefault(m => m.LawsonDatabaseID == model.LawsonDatabaseID);
+            db.LawsonApprovalDate = model.LawsonApprovalDate;
+            db.LawsonNumber = model.LawsonNumber;
+            db.DatabaseStatus = model.DatabaseStatus;
+            db.Developer = model.Developer;
+            db.InvoiceContact = model.InvoiceContact;
+            db.InvoiceContactEmail = model.InvoiceContactEmail;
+            db.StudyTitle = model.StudyTitle;
+            db.OnServerStatus = model.OnServerStatus;
+            db.Nickname = model.Nickname;
+            db.REB = model.REB;
+            db.REBExpiry = model.REBExpiry;
+            db.Researcher = model.Researcher;
+            db.PIName = model.PIName;
+            db.Platform = model.Platform;
+            db.LawsonDatabaseID = model.LawsonDatabaseID;
+            db.Name = model.Name;
+
+            Dictionary<string, string> additionalFields = model.AdditionalFields;
+            XDocument doc = new XDocument();
+            XElement root = new XElement("AdditionalFields");
+            foreach (var kvb in model.AdditionalFields)
+            {
+                root.Add(new XElement(toSafeFieldName(kvb.Key), toSafeFieldName(kvb.Value)));
+            }
+            doc.Add(root);
+            db.AdditionalFields = doc.ToString();
+
+            if (ModelState.IsValid)
+            {
+                repository.SaveDatabase(db);
+                addAlert("{0} has been saved", new string[] { db.Nickname }, ALERT_SUCCESS);
+                return RedirectToAction("List");
+            }
+            else
+            {
+                return View(model);
+            }
         }
 
         [HttpPost, ValidateInput(false)]
@@ -128,8 +203,8 @@ namespace DatabaseManager.WebUI.Controllers
             }
 
             // Replace spaces with unused character (for xml formatting)
-            string safeFieldName = fieldName.Replace(" ", "SpaceDummyChar");
-            string safeFieldValue = fieldValue.Replace(" ", "SpaceDummyChar");
+            string safeFieldName = toSafeFieldName(fieldName);
+            string safeFieldValue = toSafeFieldName(fieldValue);
 
             XElement elem = new XElement(safeFieldName, safeFieldValue);
             XDocument doc = new XDocument();
@@ -147,7 +222,7 @@ namespace DatabaseManager.WebUI.Controllers
                     else
                     {
                         doc = XDocument.Parse(database.AdditionalFields);
-                        if (doc.Descendants().FirstOrDefault(m => m.Name == safeFieldName) != null)
+                        if (doc.Descendants().FirstOrDefault(m => String.Equals(m.Name.ToString(), safeFieldName, StringComparison.OrdinalIgnoreCase)) != null)
                         {
                             addAlert("At least one database already contained the field \"{0}\". These databases were not modified", new string[] { fieldName }, ALERT_DANGER);
                             continue;
@@ -174,7 +249,7 @@ namespace DatabaseManager.WebUI.Controllers
                 else
                 {
                     doc = XDocument.Parse(db.AdditionalFields);
-                    if (doc.Descendants().FirstOrDefault(m => m.Name == safeFieldName) != null)
+                    if (doc.Descendants().FirstOrDefault(m => String.Equals(m.Name.ToString(), safeFieldName, StringComparison.OrdinalIgnoreCase)) != null)
                     {
                         addAlert("{0} already exists", new string[] { fieldName }, ALERT_DANGER);
                         return View(db);
@@ -226,6 +301,16 @@ namespace DatabaseManager.WebUI.Controllers
         {
             TempData["message"] = string.Format(alert, args);
             TempData["alert-class"] = alertClass;
+        }
+
+        public string toSafeFieldName(string message)
+        {
+            return message.Replace(" ", "SpaceDummyChar");
+        }
+
+        public string rawName(string message)
+        {
+            return message.Replace("SpaceDummyChar", " ");
         }
     }
 }
