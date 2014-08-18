@@ -142,14 +142,17 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DatabaseController.cs" />
+    <Compile Include="Controllers\EmailController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\Abstract\IAuthProvider.cs" />
+    <Compile Include="Infrastructure\Abstract\IEmailProvider.cs" />
     <Compile Include="Infrastructure\Authentication\HashComputer.cs" />
     <Compile Include="Infrastructure\Authentication\PasswordManager.cs" />
     <Compile Include="Infrastructure\Authentication\SaltGenerator.cs" />
     <Compile Include="Infrastructure\Concrete\FormsAuthProvider.cs" />
+    <Compile Include="Infrastructure\Concrete\SimpleEmailSender.cs" />
     <Compile Include="Infrastructure\ExcelStringBuilder.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
     <Compile Include="Models\EditViewModel.cs" />
@@ -163,13 +166,14 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Database\ListTemp.cshtml" />
     <Content Include="Views\Database\Edit.cshtml" />
     <Content Include="Views\Database\AddColumn.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Shared\_NotAuthenticatedLayout.cshtml" />
     <Content Include="Views\Database\List.cshtml" />
+    <Content Include="Views\Email\SendEmail.cshtml" />
+    <Content Include="Views\Database\EditTemp.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -184,6 +188,10 @@
     <ProjectReference Include="..\DatabaseManager.Domain\DatabaseManager.Domain.csproj">
       <Project>{3d92b67d-2fa8-498b-ac5f-7475d476a89c}</Project>
       <Name>DatabaseManager.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Resources\Resources.csproj">
+      <Project>{d05dbd96-1a9e-44e3-8ed1-2550b9c19f6a}</Project>
+      <Name>Resources</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

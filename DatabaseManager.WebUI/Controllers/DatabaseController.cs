@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -28,7 +28,6 @@ namespace DatabaseManager.WebUI.Controllers
         public DatabaseController(ILawsonDatabaseRepository repo)
         {
             repository = repo;
-            ILawsonDatabaseRepository test = new EFLawsonDatabaseRepository();
         }
 
         public ViewResult List(string sortingOrder = DEFAULT_SORTING_ORDER, bool welcome = false)
@@ -73,47 +72,79 @@ namespace DatabaseManager.WebUI.Controllers
         {
             var db = repository.LawsonDatabases.FirstOrDefault(d => d.LawsonDatabaseID == lawsonDatabaseID);
             var tempFields = db.AdditionalFields;
-            var additionalFields = tempFields != null ? XDocument.Parse(tempFields).Descendants("AdditionalFields")
+            ViewBag.AdditionalFields = tempFields != null ? XDocument.Parse(tempFields).Descendants("AdditionalFields")
                 .Elements()
-                .ToDictionary(r => r.Name.ToString().Replace("SpaceDummyChar", " "), r => r.Value.ToString().Replace("SpaceDummyChar", " ")) : new Dictionary<string, string>();
+                .ToDictionary(r => toSafeFieldName(r.Name.ToString()), r => toSafeFieldName(r.Value.ToString())) : new Dictionary<string, string>();
 
-            return View(new EditViewModel { 
-                AdditionalFieldsDictionary = additionalFields,
-                LawsonDatabaseID = db.LawsonDatabaseID,
-                OnServerStatus = db.OnServerStatus,
-                DatabaseStatus = db.DatabaseStatus,
-                Platform = db.Platform,
-                PIName = db.PIName,
-                Nickname = db.Nickname,
-                Developer = db.Developer,
-                StudyTitle = db.StudyTitle,
-                LawsonNumber = db.LawsonNumber,
-                REB = db.REB,
-                REBExpiry = db.REBExpiry,
+            return View(db);
+        }
+
+        public ViewResult EditTemp(int lawsonDatabaseID)
+        {
+            var db = repository.LawsonDatabases.FirstOrDefault(d => d.LawsonDatabaseID == lawsonDatabaseID);
+            string tempFields = db.AdditionalFields;
+            var x = tempFields != null ? XDocument.Parse(tempFields).Descendants("AdditionalFields")
+                .Elements()
+                .ToDictionary(r => rawName(r.Name.ToString()), r => rawName(r.Value.ToString())) : new Dictionary<string, string>();
+
+            return View(new EditViewModel
+            {
                 LawsonApprovalDate = db.LawsonApprovalDate,
-                Researcher = db.Researcher,
+                LawsonNumber = db.LawsonNumber,
+                DatabaseStatus = db.DatabaseStatus,
+                Developer = db.Developer,
                 InvoiceContact = db.InvoiceContact,
                 InvoiceContactEmail = db.InvoiceContactEmail,
-                AdditionalFields = db.AdditionalFields
+                StudyTitle = db.StudyTitle,
+                OnServerStatus = db.OnServerStatus,
+                Nickname = db.Nickname,
+                REB = db.REB,
+                REBExpiry = db.REBExpiry,
+                Researcher = db.Researcher,
+                PIName = db.PIName,
+                Platform = db.Platform,
+                LawsonDatabaseID = db.LawsonDatabaseID,
+                Name = db.Name,
+                AdditionalFields = x
             });
         }
 
         [HttpPost, ValidateInput(false)]
-        public ActionResult Edit(EditViewModel model)
+        public ActionResult EditTemp(EditViewModel model)
         {
+            
+            LawsonDatabase db = repository.LawsonDatabases.FirstOrDefault(m => m.LawsonDatabaseID == model.LawsonDatabaseID);
+            db.LawsonApprovalDate = model.LawsonApprovalDate;
+            db.LawsonNumber = model.LawsonNumber;
+            db.DatabaseStatus = model.DatabaseStatus;
+            db.Developer = model.Developer;
+            db.InvoiceContact = model.InvoiceContact;
+            db.InvoiceContactEmail = model.InvoiceContactEmail;
+            db.StudyTitle = model.StudyTitle;
+            db.OnServerStatus = model.OnServerStatus;
+            db.Nickname = model.Nickname;
+            db.REB = model.REB;
+            db.REBExpiry = model.REBExpiry;
+            db.Researcher = model.Researcher;
+            db.PIName = model.PIName;
+            db.Platform = model.Platform;
+            db.LawsonDatabaseID = model.LawsonDatabaseID;
+            db.Name = model.Name;
+
+            Dictionary<string, string> additionalFields = model.AdditionalFields;
+            XDocument doc = new XDocument();
+            XElement root = new XElement("AdditionalFields");
+            foreach (var kvb in model.AdditionalFields)
+            {
+                root.Add(new XElement(toSafeFieldName(kvb.Key), toSafeFieldName(kvb.Value)));
+            }
+            doc.Add(root);
+            db.AdditionalFields = doc.ToString();
+
             if (ModelState.IsValid)
             {
-                XDocument doc = XDocument.Parse(repository.LawsonDatabases
-                    .FirstOrDefault(m => m.LawsonDatabaseID == model.LawsonDatabaseID)
-                    .AdditionalFields);
-
-                foreach (var elem in model.AdditionalFieldsDictionary)
-                {
-                    doc.Descendants().FirstOrDefault(m => m.Name == elem.Key).Value = elem.Value;
-                }
-
-                repository.SaveDatabase();
-                addAlert("{0} has been saved", new string[] { model.Nickname }, ALERT_SUCCESS);
+                repository.SaveDatabase(db);
+                addAlert("{0} has been saved", new string[] { db.Nickname }, ALERT_SUCCESS);
                 return RedirectToAction("List");
             }
             else
@@ -122,10 +153,25 @@ namespace DatabaseManager.WebUI.Controllers
             }
         }
 
+        [HttpPost, ValidateInput(false)]
+        public ActionResult Edit(LawsonDatabase db)
+        {
+            if (ModelState.IsValid)
+            {
+                repository.SaveDatabase(db);
+                addAlert("{0} has been saved", new string[] { db.Nickname }, ALERT_SUCCESS);
+                return RedirectToAction("List");
+            }
+            else
+            {
+                return View(db);
+            }
+        }
+
         public ViewResult Create()
         {
             ViewBag.AdditionalFields = new Dictionary<string, string>();
-            return View("Edit", new EditViewModel { AdditionalFieldsDictionary = new Dictionary<string, string>() });
+            return View("Edit", new LawsonDatabase());
         }
 
         [HttpPost]
@@ -152,13 +198,13 @@ namespace DatabaseManager.WebUI.Controllers
 
             if (fieldName == "")
             {
-                addAlert("You did not enter a field name. Please enter the field name before continuing.", new string[]{}, ALERT_DANGER);
+                addAlert("You did not enter a field name. Please enter the field name before continuing.", new string[] { }, ALERT_DANGER);
                 return View(db);
             }
 
             // Replace spaces with unused character (for xml formatting)
-            string safeFieldName = fieldName.Replace(" ", "SpaceDummyChar");
-            string safeFieldValue = fieldValue.Replace(" ", "SpaceDummyChar");
+            string safeFieldName = toSafeFieldName(fieldName);
+            string safeFieldValue = toSafeFieldName(fieldValue);
 
             XElement elem = new XElement(safeFieldName, safeFieldValue);
             XDocument doc = new XDocument();
@@ -176,13 +222,13 @@ namespace DatabaseManager.WebUI.Controllers
                     else
                     {
                         doc = XDocument.Parse(database.AdditionalFields);
-                        if (doc.Descendants().FirstOrDefault(m => m.Name == safeFieldName) != null)
+                        if (doc.Descendants().FirstOrDefault(m => String.Equals(m.Name.ToString(), safeFieldName, StringComparison.OrdinalIgnoreCase)) != null)
                         {
                             addAlert("At least one database already contained the field \"{0}\". These databases were not modified", new string[] { fieldName }, ALERT_DANGER);
                             continue;
                         }
                         doc.Root.Add(elem);
-                    } 
+                    }
 
                     database.AdditionalFields = doc.ToString();
                     repository.SaveDatabase(database);
@@ -203,7 +249,7 @@ namespace DatabaseManager.WebUI.Controllers
                 else
                 {
                     doc = XDocument.Parse(db.AdditionalFields);
-                    if (doc.Descendants().FirstOrDefault(m => m.Name == safeFieldName) != null)
+                    if (doc.Descendants().FirstOrDefault(m => String.Equals(m.Name.ToString(), safeFieldName, StringComparison.OrdinalIgnoreCase)) != null)
                     {
                         addAlert("{0} already exists", new string[] { fieldName }, ALERT_DANGER);
                         return View(db);
@@ -251,10 +297,20 @@ namespace DatabaseManager.WebUI.Controllers
         /// <param name="alert">The string to be added. Should be formatting similarily to string.Format(string)</param>
         /// <param name="args">The arguments for the formatted string</param>
         /// <param name="alertClass">The bootstrap alert class to be added to the html tag</param>
-        public void addAlert(string alert, string[] args, string alertClass) 
+        public void addAlert(string alert, string[] args, string alertClass)
         {
             TempData["message"] = string.Format(alert, args);
             TempData["alert-class"] = alertClass;
+        }
+
+        public string toSafeFieldName(string message)
+        {
+            return message.Replace(" ", "SpaceDummyChar");
+        }
+
+        public string rawName(string message)
+        {
+            return message.Replace("SpaceDummyChar", " ");
         }
     }
 }

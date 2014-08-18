@@ -37,6 +37,8 @@ namespace DatabaseManager.WebUI.Infrastructure
             kernel.Bind <ILawsonDatabaseRepository>().To<EFLawsonDatabaseRepository>();
             kernel.Bind<IUserRepository>().To<EFUserRepository>();
             kernel.Bind<IAuthProvider>().To<FormsAuthProvider>();
+            kernel.Bind<IEmailProvider>().To<SimpleEmailSender>();
+            kernel.Bind<IEmailRepository>().To<EFEmailRepository>();
         }
     }
 }
