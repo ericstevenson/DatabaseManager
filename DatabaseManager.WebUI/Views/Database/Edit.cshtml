@@ -1,4 +1,4 @@
-﻿@model DatabaseManager.Domain.Entities.LawsonDatabase
+﻿@model DatabaseManager.WebUI.Models.EditViewModel
 
 @{
     ViewBag.Title = "Edit " + Model.Nickname;
@@ -9,12 +9,11 @@
     <div class="panel-heading" style="text-align: center;">
         <h2>Edit @Model.Nickname</h2>
     </div>
-    @using (Html.BeginForm("Edit", "Database", FormMethod.Post, new { onsubmit = "verifyDates();" }))
+    @using (Html.BeginForm("EditTemp", "Database", FormMethod.Post, new { onsubmit = "verifyDates();" }))
     {
         <div class="panel-body form-total">
             <h3 style="margin-left: 5%;">Default Fields</h3>
             <hr />
-            @Html.HiddenFor(m => m.AdditionalFields)
             @Html.HiddenFor(m => m.LawsonDatabaseID)
             @foreach (var property in ViewData.ModelMetadata.Properties)
             {
@@ -65,17 +64,16 @@
             <div style="clear: both;"></div>
             <h3 style="margin-left: 5%;">Custom Fields</h3>
             <hr />
-            @foreach (KeyValuePair<string, string> kv in ViewBag.AdditionalFields)
+            @foreach (var kvp in Model.AdditionalFields)
             {
                 <div class="block-form-inline">
-                    <label>@kv.Key</label>
-                    <br />
-                    @Html.TextBox(kv.Key, kv.Value, new { @class = "form-control" })
+                    @Html.Label(kvp.Key)
+                    @Html.TextBoxFor(m => m.AdditionalFields[kvp.Key], new { @class = "form-control" })
                 </div>
             }
         </div>
         <div class="panel-footer">
-            <input type="submit" value="Save "class="btn btn-primary" />
+            <input type="submit" value="Save " class="btn btn-primary" />
             @Html.ActionLink("Add Column", "AddColumn", new { Model.LawsonDatabaseID }, new { @class = "btn btn-default" })
             @Html.ActionLink("Cancel and return to List", "List", null, new { @class = "btn btn-default" })
         </div>
