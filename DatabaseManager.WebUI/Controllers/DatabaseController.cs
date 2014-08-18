@@ -112,7 +112,7 @@ namespace DatabaseManager.WebUI.Controllers
                     doc.Descendants().FirstOrDefault(m => m.Name == elem.Key).Value = elem.Value;
                 }
 
-                repository.SaveDatabase(model.Database);
+                repository.SaveDatabase();
                 addAlert("{0} has been saved", new string[] { model.Nickname }, ALERT_SUCCESS);
                 return RedirectToAction("List");
             }
