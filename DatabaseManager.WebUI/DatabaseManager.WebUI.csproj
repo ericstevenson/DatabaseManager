@@ -176,6 +176,7 @@
     <Content Include="Views\Email\SendEmail.cshtml" />
     <Content Include="Views\Database\Edit.cshtml" />
     <Content Include="Views\Finance\Edit.cshtml" />
+    <Content Include="Views\Finance\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

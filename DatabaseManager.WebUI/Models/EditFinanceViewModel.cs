@@ -8,7 +8,8 @@ namespace DatabaseManager.WebUI.Models
 {
     public class EditFinanceViewModel
     {
-        public List<PeriodicFinance> Finances { get; set; }
-        public LawsonDatabase Database { get; set; }
+        public IEnumerable<Finance> Finances { get; set; }
+        public string DatabaseName { get; set; }
+        public Finance NewInvoice { get; set; }
     }
 }

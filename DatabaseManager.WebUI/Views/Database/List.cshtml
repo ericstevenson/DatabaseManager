@@ -18,24 +18,6 @@
         $('#databaselist').dataTable({
             "order": [[2, "asc"]]
         });
-        //var table = document.getElementById("databaselist");
-        //var dates = new Array();
-        //for (var i = 1, row; row = table.rows[i]; i++) {
-        //    var dateString = row.cells[4].getElementsByTagName("div")[0].innerText || "";
-        //    var date;
-        //    var currentDate = new Date();
-        //    if (dateString == "") date = currentDate;
-        //    else date = new Date(dateString);
-        //    if (date < currentDate) {
-        //        dates.push(row.cells[2].innerText);
-        //    }
-        //}
-        //var alertText = "<div class='alert alert-danger'><h4>The following databases have expired REB's</h4><ul>";
-        //for (var i = 0; i < dates.length; i++) {
-        //    alertText += "<li>" + dates[i] + "</li>";
-        //}
-        //alertText += "</ul></div>";
-        //$(".panel-body").before($(alertText));
     });
 </script>
 @if (ViewBag.REBExpiredAlert)
@@ -96,10 +78,11 @@
             </tbody>
         </table>
         <div class="panel-footer" style="margin-top: 3px;">
-            @Html.ActionLink("New Database", "Create", "Database", new { @class = "btn btn-default" })
-            <div class="btn btn-default">Set up email notifications</div>
-            @Html.ActionLink("Export", "Export", "Database", new { @class = "btn btn-default" })
-            <div class="btn btn-default">Set up financial reporting</div>
+            @Html.ActionLink("New Database", "Create", new { controller = "Database" }, new { @class = "btn btn-default" })
+            @Html.ActionLink("Export this List", "Export", new { controller = "Database" }, new { @class = "btn btn-default" })
+            @Html.ActionLink("Financial Reports", "Index", new { controller = "Finance" }, new { @class = "btn btn-default" })
+
         </div>
     </div>
 </div>
+

@@ -1,53 +1,128 @@
 ﻿@model DatabaseManager.WebUI.Models.EditFinanceViewModel
 
 @{
-    ViewBag.Title = "Finances for " + Model.Database.Nickname;
+    ViewBag.Title = "Finances for " + Model.DatabaseName;
 }
 
 <div class="panel">
     <div class="panel-heading" style="text-align: center;">
-        <h2>@Model.Database.Nickname Finances</h2>
+        <h2>@Model.DatabaseName</h2>
     </div>
-    <div class="panel-body form-total">
-        @for (int i = 0; i < Model.Finances.Count; i++)
-        {   
+    @using (Html.BeginForm("Edit", "Finance", FormMethod.Post, new { onsubmit = "verifyDates();" }))
+    { 
+        @Html.HiddenFor(m => m.NewInvoice.DatabaseID)
+        @Html.HiddenFor(m => m.DatabaseName)
+        <div class="panel-body form-total">
             <div>
+                <div class="form-group col-md-2 margin-moreright margin-moreleft">
+                    <label>Invoice Number</label>
+                </div>
                 <div class="form-group col-md-4">
-                    <div class="input-group date" id="@Model.Finances[i].PeriodStart">
-                        @Html.TextBoxFor(m => m.Finances[i].PeriodStart, new { @class = "form-control date-item" })
+                    @Html.TextBoxFor(m => m.NewInvoice.InvoiceNumber, new { @class = "form-control" })
+                </div>
+                <div class="form-group col-md-2 margin-moreleft">
+                    <label>Invoice</label>
+                </div>
+                <div class="form-group col-md-4">
+                    @Html.TextBoxFor(m => m.NewInvoice.Invoice, new { @class = "form-control" })
+                </div>
+                <div class="form-group col-md-2 margin-moreleft">
+                    <label>Period from:</label>
+                </div>
+                <div class="form-group col-md-4">
+                    <div class="input-group date" id="@Model.NewInvoice.PeriodStart">
+                        @Html.TextBoxFor(m => m.NewInvoice.PeriodStart, new { @class = "form-control date-item" })
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
                     </div>
                 </div>
+                <div class="form-group col-md-2 margin-moreleft">
+                    <label>To:</label>
+                </div>
                 <div class="form-group col-md-4">
-                    <div class="input-group date" id="@Model.Finances[i].PeriodEnd">
-                        @Html.TextBoxFor(m => m.Finances[i].PeriodEnd, new { @class = "form-control date-item" })
+                    <div class="input-group date" id="@Model.NewInvoice.PeriodEnd">
+                        @Html.TextBoxFor(m => m.NewInvoice.PeriodEnd, new { @class = "form-control date-item" })
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
                     </div>
-                    </div>
-                <div class="form-group col-md-4">
-                    <div class="input-group" id="@Model.Finances[i].MonthlyRate">
-                        @Html.TextBoxFor(m => m.Finances[i].MonthlyRate, new { @class = "form-control" })
-                    </div>
                 </div>
-               <script type="text/javascript">
-                    $(".date-item").each(function () {
-                        var betterDate = $("input").val().split(' ')[0];
-                        $("input").val(betterDate);
-                        $("input").val(betterDate);
-                        $("input").datetimepicker({
-                            format: 'DD/MM/YYYY',
-                            pickDate: true,
-                            pickTime: false,
-                            pick12HourFormat: false
-                        });
-                    });
-                </script>
+                <div class="form-group col-md-2 margin-moreleft">
+                    <label>Log Size</label>
+                </div>
+                <div class="form-group col-md-3">
+                    @Html.TextBoxFor(m => m.NewInvoice.LogSize, new { @class = "form-control" })
+                </div>
+                <div class="form-group col-md-1">
+                    MB
+                </div>
+                <div class="form-group col-md-2 margin-moreleft">
+                    <label>Database Size</label>
+                </div>
+                <div class="form-group col-md-3">
+                    @Html.TextBoxFor(m => m.NewInvoice.DbSize, new { @class = "form-control" })
+                </div>
+                <div class="form-group col-md-1">
+                    MB
+                </div>
+                <div style="clear: both;"></div>
+                <div class="form-group col-md-2 margin-moreleft">
+                    <label>Web Size</label>
+                </div>
+                <div class="form-group col-md-3">
+                    @Html.TextBoxFor(m => m.NewInvoice.WebSize, new { @class = "form-control" })
+                </div>
+                <div class="form-group col-md-1">
+                    MB
+                </div>
+                <div class="form-group col-md-2" style="margin-right: -50px;">
+                    <label>Total Space Usage</label>
+                </div>
+                <div class="form-group col-md-3">
+                    @Html.TextBoxFor(m => m.NewInvoice.TotalSpaceUsage, new { @class = "form-control" })
+                </div>
+                <div class="form-group col-md-1">
+                    MB
+                </div>
+                <div style="clear: both;"></div>
+                <div class="form-group col-md-2" style="margin-right: -50px;">
+                    <label>Monthly Rate</label>
+                </div>
+                <div class="form-group col-md-3">
+                    @Html.TextBoxFor(m => m.NewInvoice.MonthlyRate, new { @class = "form-control" })
+                </div>
+                <div class="form-group col-md-1">
+                    CAD
+                </div>
+                <div style="clear: both;"></div>
+                <div class="form-group col-md-2" style="margin-right: -50px;">
+                    <label>Notes</label>
+                </div>
+                <div class="form-group col-md-10">
+                    @Html.TextAreaFor(m => m.NewInvoice.Notes, new { @class = "form-control", columns = 4 })
+                </div>
             </div>
-        }
-    </div>
+        </div>
+        <div class="panel-footer">
+            <input type="submit" value="Add Report" class="btn btn-primary" />
+            @Html.ActionLink("Cancel and return to List", "List", "Database", null, new { @class = "btn btn-default" })
+        </div>
+    }
 </div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".input-group.date").each(function () {
+            var betterDate = $(".form-control").val().split(' ')[0];
+            $(".form-control").val(betterDate);
+            $(".input-group.date").datetimepicker({
+                format: 'YYYY/MM/DD',
+                pickDate: true,
+                pickTime: false,
+                pick12HourFormat: false
+            });
+        });
+    });
+</script>
+
 

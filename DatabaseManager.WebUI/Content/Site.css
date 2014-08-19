@@ -87,3 +87,12 @@ full-width {
 .navbar-nomargin {
     margin-bottom: 0px;
 }
+
+.margin-moreleft {
+    margin-right: -50px;
+}
+
+.center {
+    text-align: center;
+    vertical-align: middle;
+}
