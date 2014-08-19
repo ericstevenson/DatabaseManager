@@ -1,0 +1,40 @@
+﻿@model List<DatabaseManager.Domain.Entities.LawsonDatabase>
+
+@{
+    ViewBag.Title = "Finances";
+}
+
+<div class="container center">
+    <h4>Choose a Database</h4>
+    <hr />
+    <select class="form-control" id="FinanceDropdown" name="Finances">
+        @foreach (var item in Model)
+        {
+        <option value="@item.LawsonDatabaseID">@item.Nickname</option>
+        }
+    </select>
+    <br />
+    <input id="btnAjax" name="btnAjax" type="button" value="Go!" />
+</div>
+<div id="finances"></div>
+
+<script type="text/javascript">
+    $('#btnAjax').click(function () {
+        $.ajax({
+            url: '/Finance/Edit',
+            contentType: 'application/html; charset=utf-8',
+            data: { LawsonDatabaseID : $('#FinanceDropdown').val() },
+            type: 'GET',
+            dataType: 'html'
+ 
+        })
+        .success(function (result) {
+            $('#finances').html(result);
+            $('.panel-body input').val('');
+            $('.panel-body textarea').val('');
+        })
+        .error(function (xhr, status) {
+            alert(status);
+        })
+    });
+</script>
