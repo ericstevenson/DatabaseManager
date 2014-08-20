@@ -10,11 +10,17 @@
     <select class="form-control" id="FinanceDropdown" name="Finances">
         @foreach (var item in Model)
         {
-        <option value="@item.LawsonDatabaseID">@item.Nickname</option>
+            <option value="@item.LawsonDatabaseID">@item.Nickname</option>
         }
     </select>
     <br />
-    <input id="btnAjax" name="btnAjax" type="button" value="Go!" />
+    <div class="btn-toolbar center">
+        <input id="btnAjax" name="btnAjax" type="button" value="Add Record" class="btn btn-primary" />
+        <div style="display: inline-block; margin-left:17px;">or</div>
+    <div class="btn">
+        <a href="~/Finance/List" class="btn btn-default">View Records</a>
+    </div>
+    </div>
 </div>
 <div id="finances"></div>
 
@@ -23,10 +29,10 @@
         $.ajax({
             url: '/Finance/Edit',
             contentType: 'application/html; charset=utf-8',
-            data: { LawsonDatabaseID : $('#FinanceDropdown').val() },
+            data: { LawsonDatabaseID: $('#FinanceDropdown').val() },
             type: 'GET',
             dataType: 'html'
- 
+
         })
         .success(function (result) {
             $('#finances').html(result);

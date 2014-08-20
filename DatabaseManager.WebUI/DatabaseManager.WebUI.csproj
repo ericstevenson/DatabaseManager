@@ -135,7 +135,9 @@
     <Content Include="Scripts\moment-with-langs.min.js" />
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\moment.min.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\NinjectWebCommon.cs" />
@@ -149,15 +151,18 @@
     </Compile>
     <Compile Include="Infrastructure\Abstract\IAuthProvider.cs" />
     <Compile Include="Infrastructure\Abstract\IEmailProvider.cs" />
+    <Compile Include="Infrastructure\Abstract\IPaymentProvider.cs" />
     <Compile Include="Infrastructure\Authentication\HashComputer.cs" />
     <Compile Include="Infrastructure\Authentication\PasswordManager.cs" />
     <Compile Include="Infrastructure\Authentication\SaltGenerator.cs" />
     <Compile Include="Infrastructure\Concrete\FormsAuthProvider.cs" />
+    <Compile Include="Infrastructure\Concrete\PaymentCalculator.cs" />
     <Compile Include="Infrastructure\Concrete\SimpleEmailSender.cs" />
     <Compile Include="Infrastructure\ExcelStringBuilder.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
     <Compile Include="Models\EditFinanceViewModel.cs" />
     <Compile Include="Models\EditViewModel.cs" />
+    <Compile Include="Models\FinanceListViewModel.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="Models\RegisterViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -175,8 +180,11 @@
     <Content Include="Views\Database\List.cshtml" />
     <Content Include="Views\Email\SendEmail.cshtml" />
     <Content Include="Views\Database\Edit.cshtml" />
-    <Content Include="Views\Finance\Edit.cshtml" />
+    <Content Include="Views\Finance\_Edit.cshtml" />
     <Content Include="Views\Finance\Index.cshtml" />
+    <Content Include="Views\Finance\_Invoice.cshtml" />
+    <Content Include="Views\Finance\List.cshtml" />
+    <Content Include="Views\Finance\EditFinance.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -62,7 +62,7 @@ namespace DatabaseManager.WebUI.Controllers
         }
 
         [HttpPost]
-        public ActionResult Register(RegisterViewModel model, string returnUrl)
+        public ActionResult Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +86,7 @@ namespace DatabaseManager.WebUI.Controllers
                     };
                     repository.SaveUser(user);
                     authProvider.Authenticate(user.Username, model.Password, user.Salt, user.PasswordHash);
-                    return Redirect(returnUrl ?? Url.Action("List", "Database"));
+                    return Redirect(Url.Action("List", "Database"));
                 }
 
             }

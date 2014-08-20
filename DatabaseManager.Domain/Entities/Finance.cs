@@ -20,5 +20,8 @@ namespace DatabaseManager.Domain.Entities
         public int? InvoiceNumber { get; set; }
         public string Invoice { get; set; }
         public string Notes { get; set; }
+        public double? AmountDue { get; set; }
+        public bool? Paid { get; set; }
+        public DateTime? DatePaid { get; set; }
     }
 }

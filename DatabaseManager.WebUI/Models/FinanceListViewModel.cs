@@ -6,9 +6,8 @@ using DatabaseManager.Domain.Entities;
 
 namespace DatabaseManager.WebUI.Models
 {
-    public class EditFinanceViewModel
+    public class FinanceListViewModel
     {
-        public string DatabaseName { get; set; }
-        public Finance NewInvoice { get; set; }
+        public List<Tuple<string, Finance>> FinanceList { get; set; }
     }
 }

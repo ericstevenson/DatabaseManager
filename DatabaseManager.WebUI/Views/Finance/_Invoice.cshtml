@@ -1,0 +1,12 @@
+﻿@model Tuple<string, DatabaseManager.Domain.Entities.Finance>
+
+<tr>
+    <td>@Html.ActionLink(Model.Item1, "EditFinance", "Finance", new { id = Model.Item2.Id}, null)</td>
+    <td>@(Model.Item2.PeriodStart != null ? Model.Item2.PeriodStart.Value.ToString("yyyy/MM/dd") : "")</td>
+    <td>@(Model.Item2.PeriodEnd != null ? Model.Item2.PeriodEnd.Value.ToString("yyyy/MM/dd") : "")</td>
+    <td>@Model.Item2.MonthlyRate</td>
+    <td>@Model.Item2.TotalSpaceUsage</td>
+    <td>@Model.Item2.Paid</td>
+</tr>
+
+

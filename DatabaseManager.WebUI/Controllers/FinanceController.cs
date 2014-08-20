@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using DatabaseManager.Domain.Abstract;
 using DatabaseManager.Domain.Entities;
 using DatabaseManager.WebUI.Models;
+using DatabaseManager.WebUI.Infrastructure.Abstract;
 
 namespace DatabaseManager.WebUI.Controllers
 {
@@ -16,22 +17,23 @@ namespace DatabaseManager.WebUI.Controllers
 
         private ILawsonDatabaseRepository repository;
         private IFinanceRepository financeRepository;
+        private IPaymentProvider paymentProvider;
 
-        public FinanceController(ILawsonDatabaseRepository repo, IFinanceRepository financeRepo)
+        public FinanceController(ILawsonDatabaseRepository repo, IFinanceRepository financeRepo, IPaymentProvider payment)
         {
             repository = repo;
             financeRepository = financeRepo;
+            paymentProvider = payment;
         }
 
         public PartialViewResult Edit(int LawsonDatabaseID)
         {
             IEnumerable<Finance> finances = financeRepository.Finances.Where(f => f.DatabaseID == LawsonDatabaseID);
             LawsonDatabase database = repository.LawsonDatabases.FirstOrDefault(d => d.LawsonDatabaseID == LawsonDatabaseID);
-            return PartialView(new EditFinanceViewModel
+            return PartialView("_Edit", new EditFinanceViewModel
             {
-                Finances = finances,
                 DatabaseName = database.Nickname,
-                NewInvoice = new Finance { DatabaseID = database.LawsonDatabaseID }
+                NewInvoice = new Finance { DatabaseID = database.LawsonDatabaseID, Paid = false}
             });
         }
 
@@ -40,6 +42,10 @@ namespace DatabaseManager.WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (model.NewInvoice.PeriodStart != null && model.NewInvoice.PeriodEnd != null && model.NewInvoice.MonthlyRate != null)
+                {
+                    model.NewInvoice.AmountDue = paymentProvider.CalculatePayment(model.NewInvoice.MonthlyRate.Value, model.NewInvoice.PeriodStart.Value, model.NewInvoice.PeriodEnd.Value);
+                }
                 financeRepository.SaveFinance(model.NewInvoice);
                 addAlert("{0} has been saved", new string[] { model.DatabaseName ?? "Database" }, ALERT_SUCCESS);
                 return RedirectToAction("List", "Database", null);
@@ -47,9 +53,26 @@ namespace DatabaseManager.WebUI.Controllers
             return View(model);
         }
 
+        public ViewResult List()
+        {
+            FinanceListViewModel model = new FinanceListViewModel();
+            model.FinanceList = new List<Tuple<string, Finance>>();
+            foreach (Finance finance in financeRepository.Finances)
+            {
+                string name = repository.LawsonDatabases.First(d => d.LawsonDatabaseID == finance.DatabaseID).Nickname ?? "";
+                model.FinanceList.Add(Tuple.Create<string, Finance>(name, finance));
+            }
+            return View(model);
+        }
+
         public ViewResult Index()
         {
             return View(repository.LawsonDatabases.ToList());
+        }
+
+        public ActionResult EditFinance(int id)
+        {
+            return View();
         }
 
         /// <summary>
