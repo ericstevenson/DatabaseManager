@@ -30,5 +30,17 @@ namespace DatabaseManager.Domain.Concrete
             context.SaveChanges();
             return finance.Id;
         }
+
+
+        public Finance DeleteFinance(int id)
+        {
+            Finance finance = context.Finances.Find(id);
+            if (finance != null)
+            {
+                context.Entry(finance).State = System.Data.Entity.EntityState.Deleted;
+                context.SaveChanges();
+            }
+            return finance;
+        }
     }
 }

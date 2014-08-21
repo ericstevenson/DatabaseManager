@@ -33,7 +33,7 @@ namespace DatabaseManager.WebUI.Controllers
             return PartialView("_Edit", new EditFinanceViewModel
             {
                 DatabaseName = database.Nickname,
-                NewInvoice = new Finance { DatabaseID = database.LawsonDatabaseID, Paid = false}
+                NewInvoice = new Finance { DatabaseID = database.LawsonDatabaseID, Paid = false }
             });
         }
 
@@ -42,18 +42,30 @@ namespace DatabaseManager.WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
+                model.NewInvoice.TotalSpaceUsage = model.NewInvoice.DbSize + 0.3 * model.NewInvoice.LogSize + model.NewInvoice.WebSize;
                 if (model.NewInvoice.PeriodStart != null && model.NewInvoice.PeriodEnd != null && model.NewInvoice.MonthlyRate != null)
                 {
                     model.NewInvoice.AmountDue = paymentProvider.CalculatePayment(model.NewInvoice.MonthlyRate.Value, model.NewInvoice.PeriodStart.Value, model.NewInvoice.PeriodEnd.Value);
                 }
                 financeRepository.SaveFinance(model.NewInvoice);
                 addAlert("{0} has been saved", new string[] { model.DatabaseName ?? "Database" }, ALERT_SUCCESS);
-                return RedirectToAction("List", "Database", null);
+                return RedirectToAction("ListDatabases", "Database", null);
             }
             return View(model);
         }
 
-        public ViewResult List()
+        [HttpPost]
+        public ActionResult Delete(int id)
+        {
+            Finance financetoDelete = financeRepository.DeleteFinance(id);
+            if (financetoDelete != null)
+            {
+                addAlert("{0} has been deleted", new string[] {  "Record" }, ALERT_SUCCESS);
+            }
+            return RedirectToAction("ListFinances");
+        }
+
+        public ViewResult ListFinances()
         {
             FinanceListViewModel model = new FinanceListViewModel();
             model.FinanceList = new List<Tuple<string, Finance>>();
@@ -70,9 +82,28 @@ namespace DatabaseManager.WebUI.Controllers
             return View(repository.LawsonDatabases.ToList());
         }
 
-        public ActionResult EditFinance(int id)
+        public ActionResult EditFinance(int id, string name)
         {
-            return View();
+
+            EditFinanceViewModel model = new EditFinanceViewModel
+            {
+                NewInvoice = financeRepository
+                    .Finances.First(m => m.Id == id),
+                DatabaseName = name
+            };
+            return View(model);
+        }
+
+        public string MarkAsPaid(string id, string datePaid)
+        {
+            Finance finance = financeRepository.Finances.FirstOrDefault(m => m.Id == Int32.Parse(id));
+            finance.Paid = true;
+            if (datePaid != "")
+            {
+                finance.DatePaid = DateTime.Parse(datePaid);
+            }
+            financeRepository.SaveFinance(finance);
+            return "<span class='glyphicon glyphicon-ok'></span>" + "|" + datePaid;
         }
 
         /// <summary>

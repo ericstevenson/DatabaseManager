@@ -12,6 +12,7 @@
     { 
         @Html.HiddenFor(m => m.NewInvoice.DatabaseID)
         @Html.HiddenFor(m => m.DatabaseName)
+        @Html.HiddenFor(m => m.NewInvoice.Paid)
         <div class="panel-body form-total">
             <div>
                 <div class="form-group col-md-2 margin-moreright margin-moreleft">
@@ -77,16 +78,6 @@
                     MB
                 </div>
                 <div class="form-group col-md-2" style="margin-right: -50px;">
-                    <label>Total Space Usage</label>
-                </div>
-                <div class="form-group col-md-3">
-                    @Html.TextBoxFor(m => m.NewInvoice.TotalSpaceUsage, new { @class = "form-control" })
-                </div>
-                <div class="form-group col-md-1">
-                    MB
-                </div>
-                <div style="clear: both;"></div>
-                <div class="form-group col-md-2" style="margin-right: -50px;">
                     <label>Monthly Rate</label>
                 </div>
                 <div class="form-group col-md-3">
@@ -105,8 +96,8 @@
             </div>
         </div>
         <div class="panel-footer">
-            <input type="submit" value="Add Report" class="btn btn-primary" />
-            @Html.ActionLink("Cancel and return to List", "List", "Database", null, new { @class = "btn btn-default" })
+            <input type="submit" value="Submit" class="btn btn-primary" />
+            @Html.ActionLink("Cancel and return to List", "ListFinances", "Finances", null, new { @class = "btn btn-default" })
         </div>
     }
 </div>

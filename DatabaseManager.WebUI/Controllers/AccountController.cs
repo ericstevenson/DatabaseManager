@@ -42,7 +42,7 @@ namespace DatabaseManager.WebUI.Controllers
                 }
                 else if (authProvider.Authenticate(model.Username, model.Password, user.Salt, user.PasswordHash))
                 {
-                    return Redirect(Url.Action("List", "Database", new { welcome = true }));
+                    return Redirect(Url.Action("ListDatabases", "Database", new { welcome = true }));
                 }
                 else
                 {
@@ -86,7 +86,7 @@ namespace DatabaseManager.WebUI.Controllers
                     };
                     repository.SaveUser(user);
                     authProvider.Authenticate(user.Username, model.Password, user.Salt, user.PasswordHash);
-                    return Redirect(Url.Action("List", "Database"));
+                    return Redirect(Url.Action("ListDatabases", "Database"));
                 }
 
             }

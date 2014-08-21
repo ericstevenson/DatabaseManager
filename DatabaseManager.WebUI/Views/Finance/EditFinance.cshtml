@@ -1,7 +1,128 @@
-﻿
+﻿@model DatabaseManager.WebUI.Models.EditFinanceViewModel
 @{
-    ViewBag.Title = "ViewFinance";
+    ViewBag.Title = Model.DatabaseName + " Finances";
 }
 
-<h2>ViewFinance</h2>
+<div class="panel">
+    <div class="panel-heading" style="text-align: center;">
+        <h2>Database: @(Model.DatabaseName)</h2>
+    </div>
+    <div class="panel-body">
+        <div class="col-md-6 col-md-offset-3">
+            <table class="table table-striped table-condensed center" id="invoice">
+                <tbody>
+                    <tr>
+                        <td>Database Size</td>
+                        <td>@Model.NewInvoice.DbSize</td>
+                    </tr>
+                    <tr>
+                        <td>Log Size</td>
+                        <td>@Model.NewInvoice.LogSize</td>
+                    </tr>
+                    <tr>
+                        <td>Web Size</td>
+                        <td>@Model.NewInvoice.WebSize</td>
+                    </tr>
+                    <tr>
+                        <td>Total Space Usage</td>
+                        <td>@Model.NewInvoice.TotalSpaceUsage</td>
+                    </tr>
+                    <tr>
+                        <td>Monthly Rate</td>
+                        <td>@Model.NewInvoice.MonthlyRate</td>
+                    </tr>
+                    <tr>
+                        <td>Period Start</td>
+                        <td>@(Model.NewInvoice.PeriodStart != null ? Model.NewInvoice.PeriodStart.Value.ToShortDateString() : "")</td>
+                    </tr>
+                    <tr>
+                        <td>Period End</td>
+                        <td>@(Model.NewInvoice.PeriodEnd != null ? Model.NewInvoice.PeriodEnd.Value.ToShortDateString() : "")</td>
+                    </tr>
+                    <tr>
+                        <td>Amount Due</td>
+                        <td>@Model.NewInvoice.AmountDue</td>
+                    </tr>
+                    <tr>
+                        <td>Paid</td>
+                        <td id="TablePaid">@Html.Raw((Model.NewInvoice.Paid == true ? "<span class='glyphicon glyphicon-ok'></span>" : "<span class='glyphicon glyphicon-remove'></span>"))</td>
+                    </tr>
+                    <tr>
+                        <td>Date Paid</td>
+                        <td id="TablePaidDate">@(Model.NewInvoice.DatePaid != null ? Model.NewInvoice.DatePaid.Value.ToShortDateString() : "")</td>
+                    </tr>
+                    <tr>
+                        <td>Invoice</td>
+                        <td>@Html.ActionLink(Model.NewInvoice.InvoiceNumber.ToString() != "" ? Model.NewInvoice.InvoiceNumber.ToString() : "Invoice", "GetInvoice", new { invoiceId = Model.NewInvoice.Id })</td>
+                    </tr>
+                    <tr>
+                        <td>Notes</td>
+                        <td>@Model.NewInvoice.Notes</td>
+                    </tr>
+                </tbody>
+            </table>
 
+        </div>
+    </div>
+    <div class="panel-footer center">
+        @using (Html.BeginForm("Delete", "Finance"))
+        {
+            if (Model.NewInvoice.Paid != true)
+            { 
+            <button id="markaspaid" type="button" class="btn btn-default" onclick="getDate();">Mark as Paid</button>
+            }   
+            @Html.Hidden("id", Model.NewInvoice.Id)
+            <input type="submit" class="btn btn-default" value="Delete" />
+        
+            @Html.ActionLink("Cancel and Return to List", "ListFinances", new { controller = "Finance" }, new { @class = "btn btn-default" })
+        }
+    </div>
+    <div id="AddDate" class="col-md-offset-4 col-md-4" style="display: none;">
+        <label class="col-md-offset-3">Add Date Paid (not required)</label>
+        <div class="input-group date" id="PaidDateI">
+            <input type="text" id="PaidDate" class="form-control" />
+            <span class="input-group-addon">
+                <span class="glyphicon glyphicon-calendar"></span>
+            </span>
+        </div>
+        <br />
+        <input id="ajaxBtn" name="ajaxBtn" type="button" value="Go!" class="btn btn-success col-md-offset-5" />
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".input-group.date").each(function () {
+            $(".input-group.date").datetimepicker({
+                format: 'YYYY/MM/DD',
+                pickDate: true,
+                pickTime: false,
+                pick12HourFormat: false
+            });
+        });
+    });
+
+    function getDate() {
+        $('#AddDate').fadeToggle();
+    }
+    $('#ajaxBtn').click(function () {
+        $.ajax({
+            url: '/Finance/MarkAsPaid',
+            contentType: 'application/html; charset=utf-8',
+            data: { id: '@Model.NewInvoice.Id', datePaid: $('#PaidDate').val() },
+            type: 'GET',
+            dataType: 'text'
+        })
+        .success(function (result) {
+            console.log(result);
+            var paidValues = result.split("|");
+            $('#TablePaid').html(paidValues[0]);
+            $('#TablePaidDate').html(paidValues[1]);
+            $('#AddDate').fadeToggle();
+            $('#markaspaid').fadeToggle();
+        })
+        .error(function (xhr, status) {
+            alert(status);
+        })
+    });
+</script>

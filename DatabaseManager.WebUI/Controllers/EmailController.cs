@@ -46,7 +46,7 @@ namespace DatabaseManager.WebUI.Controllers
                 }
                 repository.SaveEmail(emailSender.SendEmail(dateAndName, url));
             }
-            else RedirectToAction("List", "Database");
+            else RedirectToAction("ListDatabases", "Database");
         }
     }
 }

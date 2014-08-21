@@ -1,17 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 2013 for Web
-VisualStudioVersion = 12.0.30501.0
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseManager.Domain", "DatabaseManager.Domain\DatabaseManager.Domain.csproj", "{3D92B67D-2FA8-498B-AC5F-7475D476A89C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseManager.WebUI", "DatabaseManager.WebUI\DatabaseManager.WebUI.csproj", "{DFB5A737-0314-4163-9794-CCDC665C7206}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseManager.UnitTests", "DatabaseManager.UnitTests\DatabaseManager.UnitTests.csproj", "{DA5BAAD8-F853-481C-BB77-90D2D067DA4E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailServices", "EmailServices\EmailServices.csproj", "{21EA2897-2412-4222-9A66-35726E46C2A9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resources", "Resources\Resources.csproj", "{D05DBD96-1A9E-44E3-8ED1-2550B9C19F6A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseManager.UnitTests", "DatabaseManager.UnitTests\DatabaseManager.UnitTests.csproj", "{DA5BAAD8-F853-481C-BB77-90D2D067DA4E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,10 +25,6 @@ Global
 		{DFB5A737-0314-4163-9794-CCDC665C7206}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DFB5A737-0314-4163-9794-CCDC665C7206}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DFB5A737-0314-4163-9794-CCDC665C7206}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DA5BAAD8-F853-481C-BB77-90D2D067DA4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DA5BAAD8-F853-481C-BB77-90D2D067DA4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DA5BAAD8-F853-481C-BB77-90D2D067DA4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DA5BAAD8-F853-481C-BB77-90D2D067DA4E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{21EA2897-2412-4222-9A66-35726E46C2A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{21EA2897-2412-4222-9A66-35726E46C2A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{21EA2897-2412-4222-9A66-35726E46C2A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -39,6 +33,10 @@ Global
 		{D05DBD96-1A9E-44E3-8ED1-2550B9C19F6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D05DBD96-1A9E-44E3-8ED1-2550B9C19F6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D05DBD96-1A9E-44E3-8ED1-2550B9C19F6A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA5BAAD8-F853-481C-BB77-90D2D067DA4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA5BAAD8-F853-481C-BB77-90D2D067DA4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA5BAAD8-F853-481C-BB77-90D2D067DA4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA5BAAD8-F853-481C-BB77-90D2D067DA4E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

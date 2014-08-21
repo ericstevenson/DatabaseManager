@@ -11,5 +11,7 @@ namespace DatabaseManager.Domain.Abstract
     {
         IEnumerable<Finance> Finances { get; }
         int SaveFinance(Finance finance);
+
+        Finance DeleteFinance(int id);
     }
 }

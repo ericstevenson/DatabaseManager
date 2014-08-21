@@ -177,14 +177,15 @@
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Shared\_NotAuthenticatedLayout.cshtml" />
-    <Content Include="Views\Database\List.cshtml" />
+    <Content Include="Views\Database\ListDatabases.cshtml" />
     <Content Include="Views\Email\SendEmail.cshtml" />
     <Content Include="Views\Database\Edit.cshtml" />
     <Content Include="Views\Finance\_Edit.cshtml" />
     <Content Include="Views\Finance\Index.cshtml" />
     <Content Include="Views\Finance\_Invoice.cshtml" />
-    <Content Include="Views\Finance\List.cshtml" />
+    <Content Include="Views\Finance\ListFinances.cshtml" />
     <Content Include="Views\Finance\EditFinance.cshtml" />
+    <Content Include="Views\Finance\_MarkAsPaid.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

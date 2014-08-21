@@ -30,7 +30,7 @@ namespace DatabaseManager.WebUI.Controllers
             repository = repo;
         }
 
-        public ViewResult List(string sortingOrder = DEFAULT_SORTING_ORDER, bool welcome = false)
+        public ViewResult ListDatabases(string sortingOrder = DEFAULT_SORTING_ORDER, bool welcome = false)
         {
             var databases = repository.LawsonDatabases;
             ViewBag.SortingOrder = sortingOrder;
@@ -135,7 +135,7 @@ namespace DatabaseManager.WebUI.Controllers
             {
                 repository.SaveDatabase(db);
                 addAlert("{0} has been saved", new string[] { db.Nickname ?? "Database" }, ALERT_SUCCESS);
-                return RedirectToAction("List");
+                return RedirectToAction("ListDatabases");
             }
             else
             {
@@ -162,7 +162,7 @@ namespace DatabaseManager.WebUI.Controllers
             {
                 addAlert("{0} has been deleted", new string[] { dbToDelete.Nickname ?? "Database" }, ALERT_SUCCESS);
             }
-            return RedirectToAction("List");
+            return RedirectToAction("ListDatabases");
         }
 
         public ViewResult AddColumn(int lawsonDatabaseID)
@@ -218,7 +218,7 @@ namespace DatabaseManager.WebUI.Controllers
                         addAlert("{0} successfully added", new string[] { fieldName }, ALERT_SUCCESS);
                     }
                 }
-                return RedirectToAction("List");
+                return RedirectToAction("ListDatabases");
             }
             else
             {
@@ -240,7 +240,7 @@ namespace DatabaseManager.WebUI.Controllers
                 db.AdditionalFields = doc.ToString();
                 repository.SaveDatabase(db);
                 addAlert("{0} successfully added to {1}", new string[] { fieldName, db.Nickname ?? "Database" }, ALERT_SUCCESS);
-                return RedirectToAction("List");
+                return RedirectToAction("ListDatabases");
             }
         }
 

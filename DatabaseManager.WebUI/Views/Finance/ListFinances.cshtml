@@ -11,15 +11,30 @@
 }
 
 <script type="text/javascript">
+    var oTable;
     $(document).ready(function () {
-        $('#invoicelist').dataTable({
-            "order": [[2, "asc"]]
+        oTable = $('#invoicelist').dataTable({
+            "bFilter": true,
         });
     });
 </script>
 
 <div class="panel panel-default">
     <div class="panel-body">
+        <select id="mySelect" class="form-control">
+            @foreach (var x in Model.FinanceList.Select(m => m.Item1).Distinct())
+            { 
+                <option value="@x">@x</option>
+            }
+            <option value>All</option>
+        </select>
+        <script type="text/javascript">
+            $('select#mySelect').on('change', function () {
+                var selectedValue = $(this).val();
+                oTable.fnFilter("^" + selectedValue + "$", 0, true); //Exact value, column, reg
+            });
+
+</script>
         <table class="table table-striped table-condensed" id="invoicelist">
             <thead>
                 <tr>
@@ -31,6 +46,7 @@
                     <th>Paid</th>
                 </tr>
             </thead>
+
             <tbody>
                 @foreach (var ob in Model.FinanceList)
                 {
@@ -38,6 +54,9 @@
                 }
             </tbody>
         </table>
+    </div>
+    <div class="panel-footer" style="margin-top: 3px;">
+        @Html.ActionLink("Add Record", "Index", new { controller = "Finance" }, new { @class = "btn btn-default" })
     </div>
 </div>
 
