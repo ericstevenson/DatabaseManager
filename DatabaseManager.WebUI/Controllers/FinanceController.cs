@@ -49,7 +49,7 @@ namespace DatabaseManager.WebUI.Controllers
                 }
                 financeRepository.SaveFinance(model.NewInvoice);
                 addAlert("{0} has been saved", new string[] { model.DatabaseName ?? "Database" }, ALERT_SUCCESS);
-                return RedirectToAction("ListDatabases", "Database", null);
+                return RedirectToAction("ListFinances", "Finance", null);
             }
             return View(model);
         }
@@ -94,12 +94,13 @@ namespace DatabaseManager.WebUI.Controllers
             return View(model);
         }
 
-        public string MarkAsPaid(string id, string datePaid)
+        public string MarkAsPaid(string id, string datePaid, string amountPaid)
         {
             Finance finance = financeRepository.Finances.FirstOrDefault(m => m.Id == Int32.Parse(id));
             finance.Paid = true;
             if (datePaid != "")
             {
+                finance.AmountPaid = Double.Parse(amountPaid);
                 finance.DatePaid = DateTime.Parse(datePaid);
             }
             financeRepository.SaveFinance(finance);

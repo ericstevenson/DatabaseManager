@@ -86,6 +86,9 @@
             </span>
         </div>
         <br />
+        <label class="col-md-offset-3">Add Amount Paid (not required)</label>
+        <input type="text" id="PaidAmount" class="form-control" />
+        <br />
         <input id="ajaxBtn" name="ajaxBtn" type="button" value="Go!" class="btn btn-success col-md-offset-5" />
     </div>
 </div>
@@ -109,7 +112,7 @@
         $.ajax({
             url: '/Finance/MarkAsPaid',
             contentType: 'application/html; charset=utf-8',
-            data: { id: '@Model.NewInvoice.Id', datePaid: $('#PaidDate').val() },
+            data: { id: '@Model.NewInvoice.Id', datePaid: $('#PaidDate').val(), amountPaid: $('#PaidAmount').val() },
             type: 'GET',
             dataType: 'text'
         })

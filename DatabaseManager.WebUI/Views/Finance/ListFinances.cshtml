@@ -15,26 +15,54 @@
     $(document).ready(function () {
         oTable = $('#invoicelist').dataTable({
             "bFilter": true,
+            "order": [[2, "asc"]],
+            "footerCallback": function (row, data, start, end, display) {
+                var api = this.api(), data;
+
+                // Remove the formatting to get integer data for summation
+                var intVal = function (i) {
+                    return typeof i === 'string' ?
+                        i.replace(/[\$,]/g, '') * 1 :
+                        typeof i === 'number' ?
+                        i : 0;
+                };
+
+                // Total over this page
+                data = api.column(5, { page: 'current' }).data();
+                pageTotal = data.length ?
+                    data.reduce(function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }) :
+                    0;
+
+                // Update footer
+                $(api.column(5).footer()).html(
+                    '$' + pageTotal
+                );
+            }
         });
     });
 </script>
 
 <div class="panel panel-default">
     <div class="panel-body">
-        <select id="mySelect" class="form-control">
-            @foreach (var x in Model.FinanceList.Select(m => m.Item1).Distinct())
-            { 
-                <option value="@x">@x</option>
-            }
-            <option value>All</option>
-        </select>
+        <div style="padding-bottom: 25px;" class="form-inline form-group">
+            <label class="col-md-2 col-md-offset-2" for="mySelect">Filter By Database:</label>
+            <select class="col-md-6 form-control" id="mySelect" name="mySelect">
+                <option value=" " selected="selected">All</option>
+                @foreach (var x in Model.FinanceList.Select(m => m.Item1).Distinct())
+                { 
+                    <option value="@x">@x</option>
+                }
+            </select>
+        </div>
         <script type="text/javascript">
             $('select#mySelect').on('change', function () {
                 var selectedValue = $(this).val();
                 oTable.fnFilter("^" + selectedValue + "$", 0, true); //Exact value, column, reg
             });
 
-</script>
+        </script>
         <table class="table table-striped table-condensed" id="invoicelist">
             <thead>
                 <tr>
@@ -42,10 +70,19 @@
                     <th>Period Start</th>
                     <th>Period End</th>
                     <th>Monthly Rate</th>
-                    <th>Total Space Usage</th>
+                    <th>Amount Due</th>
+                    <th>Amount Paid</th>
                     <th>Paid</th>
                 </tr>
             </thead>
+
+            <tfoot>
+                <tr>
+                    <th colspan="5" style="text-align: right">Total:</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </tfoot>
 
             <tbody>
                 @foreach (var ob in Model.FinanceList)

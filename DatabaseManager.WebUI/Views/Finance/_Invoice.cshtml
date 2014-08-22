@@ -5,7 +5,8 @@
     <td>@(Model.Item2.PeriodStart != null ? Model.Item2.PeriodStart.Value.ToString("yyyy/MM/dd") : "")</td>
     <td>@(Model.Item2.PeriodEnd != null ? Model.Item2.PeriodEnd.Value.ToString("yyyy/MM/dd") : "")</td>
     <td>@Model.Item2.MonthlyRate</td>
-    <td>@Model.Item2.TotalSpaceUsage</td>
+    <td>@(Model.Item2.AmountDue)</td>
+    <td>@(Model.Item2.AmountPaid)</td>
     <td>@(Model.Item2.Paid == true ? Model.Item2.DatePaid != null ? Model.Item2.DatePaid.Value.ToShortDateString() : "Yes" : "No")</td>
 </tr>
 

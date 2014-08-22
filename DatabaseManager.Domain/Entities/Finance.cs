@@ -17,10 +17,9 @@ namespace DatabaseManager.Domain.Entities
         public double? DbSize { get; set; }
         public double? WebSize { get; set; }
         public double? TotalSpaceUsage { get; set; }
-        public int? InvoiceNumber { get; set; }
-        public string Invoice { get; set; }
         public string Notes { get; set; }
         public double? AmountDue { get; set; }
+        public double? AmountPaid { get; set; }
         public bool? Paid { get; set; }
         public DateTime? DatePaid { get; set; }
     }
