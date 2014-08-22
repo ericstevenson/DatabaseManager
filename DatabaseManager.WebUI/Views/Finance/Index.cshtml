@@ -36,7 +36,7 @@
         })
         .success(function (result) {
             $('#finances').html(result);
-            $('.panel-body input').val('');
+            $(".panel-body input:not('.date-item')").val('');
             $('.panel-body textarea').val('');
         })
         .error(function (xhr, status) {

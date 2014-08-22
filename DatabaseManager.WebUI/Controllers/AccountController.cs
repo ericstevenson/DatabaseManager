@@ -58,7 +58,7 @@ namespace DatabaseManager.WebUI.Controllers
 
         public ViewResult Register()
         {
-            return View();
+            return View("RegisterDenied");
         }
 
         [HttpPost]

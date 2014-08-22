@@ -55,6 +55,24 @@ namespace DatabaseManager.WebUI.Controllers
         }
 
         [HttpPost]
+        public ActionResult SaveFinance(EditFinanceViewModel model)
+        {
+            Finance finance = financeRepository.Finances.First(m => m.Id == model.NewInvoice.Id);
+            finance.AmountDue = model.NewInvoice.AmountDue;
+            finance.Paid = model.NewInvoice.Paid;
+            finance.AmountPaid = model.NewInvoice.AmountPaid;
+            finance.DbSize = model.NewInvoice.DbSize;
+            finance.WebSize = model.NewInvoice.WebSize;
+            finance.MonthlyRate = model.NewInvoice.MonthlyRate;
+            finance.PeriodEnd = model.NewInvoice.PeriodEnd;
+            finance.PeriodStart = model.NewInvoice.PeriodStart;
+            finance.DatePaid = model.NewInvoice.DatePaid;
+            finance.Notes = model.NewInvoice.Notes;
+            financeRepository.SaveFinance(finance);
+            return RedirectToAction("ListFinances");
+        }
+
+        [HttpPost]
         public ActionResult Delete(int id)
         {
             Finance financetoDelete = financeRepository.DeleteFinance(id);

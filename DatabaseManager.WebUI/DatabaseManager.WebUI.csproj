@@ -129,6 +129,8 @@
     <Content Include="Scripts\custom.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <Content Include="Scripts\jquery.editable.min.js" />
+    <Content Include="Scripts\jquery.jeditable.min.js" />
     <Content Include="Scripts\less-1.4.1.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\moment-with-langs.js" />
@@ -186,6 +188,7 @@
     <Content Include="Views\Finance\ListFinances.cshtml" />
     <Content Include="Views\Finance\EditFinance.cshtml" />
     <Content Include="Views\Finance\_MarkAsPaid.cshtml" />
+    <Content Include="Views\Account\RegisterDenied.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
